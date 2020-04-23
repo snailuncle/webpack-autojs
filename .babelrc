@@ -1,0 +1,10 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-transform-modules-commonjs"],
+    ["transform-remove-strict-mode"]
+  ],
+  "ignore": [
+  ]
+}

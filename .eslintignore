@@ -1,0 +1,10 @@
+# 把下面 .eslintignore 文件放到当前工作目录里，将忽略 node_modules，bower_components 以及 build/ 目录下除了 build/index.js 的所有文件。
+
+# /node_modules/* and /bower_components/* ignored by default
+
+# Ignore built files except build/index.js
+
+build/*
+!build/index.js
+ApplicationCenter/autojsDemo/*
+ApplicationCenter/pro商店脚本/*
