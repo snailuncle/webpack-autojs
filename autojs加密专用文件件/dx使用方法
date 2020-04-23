@@ -1,0 +1,3 @@
+1. 随便进一个build-tools文件夹, 里面就有dx.bat
+2. 在dx.bat所在文件夹, 按住shift, 点击鼠标右键, 在此处打开Powershell窗口
+3. 输入dx, 回车, 如果有error: no command specified, 就表示dx可用
