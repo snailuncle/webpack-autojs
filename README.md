@@ -45,3 +45,6 @@
 1. webview打包推荐: `https://github.com/molysama/auto.pro`
 2. require只能用相对路径, webpack才能正常打包
 3. require如果用绝对路径, 请使用global.require代替  如global.require("/sdcard/module1.js")
+
+## js转dex, 可以参考此仓库
+[batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
