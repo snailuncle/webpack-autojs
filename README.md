@@ -46,5 +46,11 @@
 2. require只能用相对路径, webpack才能正常打包
 3. require如果用绝对路径, 请使用global.require代替  如global.require("/sdcard/module1.js")
 
+## 常见错误
+1. xml中使用了this, webpack不认识autojs里面的xml中的this, 请用其他方式实现
+2. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
+3. require使用了绝对路径, 请避免使用绝对路径,
+4. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
+
 ## js转dex, 可以参考此仓库
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
