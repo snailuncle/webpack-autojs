@@ -21,48 +21,13 @@ var getFilename = function (filePath) {
   return path.parse(filePath).name;
 };
 
-var 获取要打包的文件列表 = function (folder) {
-  const items = fs.readdirSync(folder);
-  var childFolderList = [];
-  var len = items.length;
-  for (var i = 0; i < len; i++) {
-    var item = items[i];
-    item = path.join(folder, item);
-    if (fs.statSync(item).isDirectory()) {
-      let basename = path.basename(item);
-      let filePath1 = path.join(item, basename + ".js");
-      let filePath2 = path.join(item, basename + ".ui.js");
-      if (fs.existsSync(filePath1)) {
-        childFolderList.push(filePath1);
-      } else if (fs.existsSync(filePath2)) {
-        childFolderList.push(filePath2);
-      }
-    }
-  }
-  return childFolderList;
-};
-
 // entry配置 根据入口文件的类型来分别配置
 
 var resultEntry = {};
 
-if (scriptConfig.isDirectory) {
-  // 是文件夹
-  var fileList = 获取要打包的文件列表(scriptConfig.entry);
-  var len = fileList.length;
-  if (len < 1) {
-    console.log("没有符合打包条件的文件");
-    process.exit(0);
-  }
-  for (var i = 0; i < len; i++) {
-    var absolutePath = fileList[i];
-    let filename = getFilename(absolutePath);
-    resultEntry[filename] = absolutePath;
-  }
-} else {
-  let filename = getFilename(scriptConfig.entry);
-  resultEntry[filename] = scriptConfig.entry;
-}
+let filename = getFilename(scriptConfig.entry);
+resultEntry[filename] = scriptConfig.entry;
+
 console.log("resultEntry=");
 console.log(resultEntry);
 // entry: {
