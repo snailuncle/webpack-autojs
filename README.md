@@ -1,4 +1,4 @@
-
+## QQ交流群 1019208967
 ### bilibili 本仓库的使用教程  https://www.bilibili.com/video/BV1n7411q7rC/
 
 -2. 无法加载文件, 因为在此系统上禁止运行脚本。 cmd管理员执行该代码 `set-ExecutionPolicy RemoteSigned`    
