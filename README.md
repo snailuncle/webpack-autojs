@@ -26,9 +26,8 @@
 6.  `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
 
 其他说明2:
-1. 简单的ui可以正常打包, webpack-autojs-loader是用户正常打包autojs的loader, 该loader功能就是在xml前面加一个反引号, 后面加一个反引号
-2. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
-3. 替换文件是`node_modules\webpack-autojs-loader\index.js`
+1. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
+2. loader文件是`node_modules\webpack-autojs-loader\index.js`
 
 其他说明3:
 1. webview打包推荐: `https://github.com/molysama/auto.pro`
@@ -39,6 +38,7 @@
 1. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
 2. require使用了绝对路径, 请避免使用绝对路径,
 3. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
+4. 若果xml中有list, 请不要省略this, 因为loader正则中会区分xml中的{{}}中是不是带了this, 来进行不同的处理
 
 ## js转dex, 可以参考此仓库
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)

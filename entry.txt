@@ -1,1 +1,1 @@
-F:\temp\list_test.js
+F:\myGithub\webpack-autojs\src\index.js
