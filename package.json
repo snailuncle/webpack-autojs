@@ -37,6 +37,6 @@
     "@babel/polyfill": "^7.4.0",
     "es6-shim": "^0.35.5",
     "randomstring": "^1.1.5",
-    "webpack-autojs-loader": "^1.0.8"
+    "webpack-autojs-loader": "^1.1.1"
   }
 }

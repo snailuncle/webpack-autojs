@@ -7,7 +7,7 @@ entry = entry.replace("\\", "/");
 
 
 var config = {
-  uiMode: false,
+  uiMode: true,
   entry: entry,
   scriptNamePrefix: "",
   base64: true,
