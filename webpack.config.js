@@ -106,7 +106,7 @@ var result = {
       // // 混淆对象键名
       // transformObjectKeys: false,
       // // 转义为Unicode，会大大增加体积，还原也比较容易，建议只对小文件使用
-      unicodeEscapeSequence: true,
+      unicodeEscapeSequence: false,
     }),
     new SetHeader({ options: true }),
     new CleanWebpackPlugin({
