@@ -1,5 +1,7 @@
 ## QQ交流群 1019208967  webpack-autojs
-### bilibili 本仓库的使用教程  https://www.bilibili.com/video/BV1n7411q7rC/
+#### bilibili 本仓库的使用教程  https://www.bilibili.com/video/BV1n7411q7rC/
+### 该视频已作废, 因为是好几月前录制的, 请以README为准
+
 
 -2. 无法加载文件, 因为在此系统上禁止运行脚本。 cmd管理员执行该代码 `set-ExecutionPolicy RemoteSigned`    
 
@@ -17,27 +19,14 @@
 
 其他说明: 
 1. 主要配置文件就一个`scriptConfig.js`
-3. `entry` 如果是文件, 打包后是一个文件
-4. `entry` 如果是文件夹, 打包后是多个文件
-5. `entry` 如果是文件夹, 目录要求如下:     
-   entry放文件夹路径parentFolder , 子项目的名称要和子项目的入口文件名一致, 子项目入口文件的后缀为.js
-   ```    
-   parentFolder--    
-                  project1--    
-                               project1.js
-                  project2--
-                               project2.js
-                  project3--
-                               project3.js
-   ```
-7. `scriptNamePrefix`是文件前缀, 可以为打包后的文件加一个文件前缀, 比如打包`index.js`, 前缀为`测试_`, 那么打包后的文件名就是`测试_index.js`
-8. `header.txt` 该文件中的内容会被添加到打包后的文件的头部, 默认为空.
-9. `uiMode` true: ui模式, false 非ui模式
-10. `base64`webpack打包后是否base64编码
-11. `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
+2. `scriptNamePrefix`是文件前缀, 可以为打包后的文件加一个文件前缀, 比如打包`index.js`, 前缀为`测试_`, 那么打包后的文件名就是`测试_index.js`
+3. `header.txt` 该文件中的内容会被添加到打包后的文件的头部, 默认为空.
+4. `uiMode` true: ui模式, false 非ui模式
+5.  `base64`webpack打包后是否base64编码
+6.  `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
 
 其他说明2:
-1. 简单的ui可以正常打包, webpack-autojs-loader是用户正常打包autojs的loader, 该loader功能就是一个正则解析文件内容, 将ui中的xml内容, 变为字符串
+1. 简单的ui可以正常打包, webpack-autojs-loader是用户正常打包autojs的loader, 该loader功能就是在xml前面加一个反引号, 后面加一个反引号
 2. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
 3. 替换文件是`node_modules\webpack-autojs-loader\index.js`
 
@@ -47,10 +36,12 @@
 3. require如果用绝对路径, 请使用global.require代替  如global.require("/sdcard/module1.js")
 
 ## 常见错误
-1. xml中使用了this, webpack不认识autojs里面的xml中的this, 请用其他方式实现
-2. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
-3. require使用了绝对路径, 请避免使用绝对路径,
-4. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
+1. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
+2. require使用了绝对路径, 请避免使用绝对路径,
+3. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
 
 ## js转dex, 可以参考此仓库
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
+
+## so中执行autojs脚本, 可以参考此仓库
+[autojsNativeJs](https://github.com/snailuncle/autojsNativeJs)
