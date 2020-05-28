@@ -39,6 +39,7 @@
 2. require使用了绝对路径, 请避免使用绝对路径,
 3. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
 4. 若果xml中有list, 请不要省略this, 因为loader正则中会区分xml中的{{}}中是不是带了this, 来进行不同的处理
+5. 变量未定义, 请注意所有变量都要先定义, 再使用; 注意js的变量提升, 导致打包后的运行错误.
 
 ## js转dex, 可以参考此仓库
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
