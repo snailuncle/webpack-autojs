@@ -41,7 +41,7 @@
 4. 若果xml中有list, 请不要省略this, 因为loader正则中会区分xml中的{{}}中是不是带了this, 来进行不同的处理
 5. 变量未定义, 请注意所有变量都要先定义, 再使用; 注意js的变量提升, 导致打包后的运行错误.
 6. 如果不定义就使用, 请在变量前面加上   global.   这7个字符, 可以避免一些变量提升导致的错误
-
+7. 如果导入jar或者dex, 使用java对象, 建议直接使用对象的完整名字, 比如`var url = new java.net.URL(myUrl);`, 而不是`var url = new URL(myUrl);`
 ## js转dex, 可以参考此仓库
 [batchJs2Dex](https://github.com/snailuncle/batchJs2Dex)
 
