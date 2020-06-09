@@ -30,7 +30,7 @@
 2. 如果`ui.inflate`之类的打包报错, 可以尝试, 将`floaty.window`定义为`floatyWindow`, 其他的` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `也一样:
 ```
 let floatyWindow = floaty.window;
-var w = floatyWindow(layoutView.layoutContent);
+var w = floatyWindow(layoutContent);
 ```
 3. loader文件是`node_modules\webpack-autojs-loader\index.js`
 
