@@ -27,7 +27,7 @@
 
 其他说明2:
 1. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
-2. 如果`ui.inflate`之类的打包报错, 可以尝试, 将`floaty.window`定义为`floatyWindow`, 其他的` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `也一样:
+2. 如果layoutContent是一个字符串变量, 而不是xml的话, 可以尝试, 将`floaty.window`定义为`floatyWindow`, 其他的` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `也一样:
 ```
 let floatyWindow = floaty.window;
 var w = floatyWindow(layoutContent);
