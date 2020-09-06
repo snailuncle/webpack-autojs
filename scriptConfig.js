@@ -6,6 +6,7 @@ var config = {
   entry:  baseDir+projectDir+entryFile,
   scriptNamePrefix: "",
   base64: false,
+  projectDir:projectDir,
   projectJson: baseDir+projectDir+"project.json",
   advancedEngines: true,
   base64RandomStrLength: 100,

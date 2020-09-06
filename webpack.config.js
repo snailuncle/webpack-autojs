@@ -31,22 +31,11 @@ resultEntry[filename] = scriptConfig.entry;
 
 console.log("resultEntry=");
 console.log(resultEntry);
-// entry: {
-//   main1:"./src/main1",
-//   main2:"./src/main2"
-// }, //入口文件,
-// entry: {
-//   app: scriptConfig.entry
-// },
-
-// filename: "ykv201yunkong_index.js",
-
-// filename: scriptConfig.scriptNamePrefix + "[name].js",
 var result = {
   entry: resultEntry,
   output: {
     filename: scriptConfig.scriptNamePrefix + "[name].js",
-    path: path.resolve(__dirname, "./dist"),
+    path: path.resolve(__dirname, "./dist/"+scriptConfig.projectDir),
   },
   target: scriptConfig.target,
 
