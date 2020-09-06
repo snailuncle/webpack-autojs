@@ -1,16 +1,12 @@
-const path = require("path");
-const fs = require("fs");
-
-var entryFile = path.join(__dirname, "entry.txt");
-var entry = fs.readFileSync(entryFile, "utf8");
-entry = entry.replace("\\", "/");
-
-
+var baseDir="./work/"
+var projectDir="dy/";
+var entryFile="main.js";
 var config = {
   uiMode: true,
-  entry: entry,
+  entry:  baseDir+projectDir+entryFile,
   scriptNamePrefix: "",
-  base64: true,
+  base64: false,
+  projectJson: baseDir+projectDir+"project.json",
   advancedEngines: true,
   base64RandomStrLength: 100,
   target: "node", // web || node

@@ -4,6 +4,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
 const SetHeader = require("./plugin/SetHeader");
+const CopyPlugin = require('copy-webpack-plugin');
 const scriptConfig = require("./scriptConfig");
 // const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
@@ -114,6 +115,15 @@ var result = {
       protectWebpackAssets: false,
       cleanOnceBeforeBuildPatterns: [],
       cleanAfterEveryBuildPatterns: ["bundle.js"],
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: scriptConfig.projectJson, to: '.' }
+       
+      ],
+      options: {
+        concurrency: 100,
+      },
     }),
   ],
   module: {
