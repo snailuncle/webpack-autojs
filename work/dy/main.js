@@ -569,7 +569,9 @@ function fistClickZanPL() {
             return;
         }
     }
+    waitTime(4);
     nextPage();
+    waitTime(2);
 }
 
 function findName(wg) {
