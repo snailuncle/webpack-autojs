@@ -1,5 +1,6 @@
 const process = require("process");
 const fs = require("fs");
+const fs1 = require("fs").promise;
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
@@ -9,33 +10,55 @@ const scriptConfig = require("./scriptConfig");
 // const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
-console.log("scriptConfig=");
-console.log(scriptConfig);
+var getFilenames = function (scriptConfig) {
+  let filePaths = []
+  scriptConfig.packProjects.forEach(packProject => {
+    let tmpName = scriptConfig.baseDir + packProject+ '/' + scriptConfig.entryFile
+    filePaths.push({project:packProject,fileName:tmpName})
+  })
 
-var getFilename = function (filePath) {
   // 返回:
   // { root: '/',
   //   dir: '/home/user/dir',
   //   base: 'file.txt',
   //   ext: '.txt',
   //   name: 'file' }
-  return path.parse(filePath).name;
+  return filePaths;
 };
+var getCopyFileConfig = function (scriptConfig) {
+  let copyPaths = []
+  scriptConfig.packProjects.forEach(packProject => {
+    let config = {
+      from:  path.resolve(__dirname, scriptConfig.baseDir + packProject).replace(/\\/g, '/'),
+      to:packProject,
+      globOptions: {
+        ignore: [
+          '**/*.js',
+          '**/*.ts',
+        ],
+      },
+    }
 
+    copyPaths.push(config)
+  })
+ 
+  return copyPaths;
+};
 // entry配置 根据入口文件的类型来分别配置
 
-var resultEntry = {};
+let filenames = getFilenames(scriptConfig);
+let resultEntry = {}
+let copyFileConfig = getCopyFileConfig(scriptConfig)
+console.log('copyFileConfig+++++',copyFileConfig)
+filenames.forEach(filename => {
+  resultEntry[filename.project] = filename.fileName
+});
 
-let filename = getFilename(scriptConfig.entry);
-resultEntry[filename] = scriptConfig.entry;
-
-console.log("resultEntry=");
-console.log(resultEntry);
 var result = {
   entry: resultEntry,
   output: {
-    filename: scriptConfig.scriptNamePrefix + "[name].js",
-    path: path.resolve(__dirname, "./dist/"+scriptConfig.projectDir),
+    filename: "[name]/[name].js",
+    path: path.resolve(__dirname, "./dist" ),
   },
   target: scriptConfig.target,
 
@@ -105,11 +128,9 @@ var result = {
       cleanOnceBeforeBuildPatterns: [],
       cleanAfterEveryBuildPatterns: ["bundle.js"],
     }),
+
     new CopyPlugin({
-      patterns: [
-        { from: scriptConfig.projectJson, to: '.' }
-       
-      ],
+      patterns: copyFileConfig,
       options: {
         concurrency: 100,
       },

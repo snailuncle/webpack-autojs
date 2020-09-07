@@ -1,0 +1,10 @@
+{
+    "name": "抖音点赞",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.example.dydianzan",
+    "versionName": "1.7.0",
+    "versionCode": 17
+}
