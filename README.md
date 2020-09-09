@@ -1,45 +1,59 @@
-## QQ交流群 1019208967  webpack-autojs
-#### bilibili 本仓库的使用教程  https://www.bilibili.com/video/BV1n7411q7rC/
-### 该视频已作废, 因为是好几月前录制的, 请以README为准
+# 概述
+本项目是在 https://github.com/snailuncle/webpack-autojs 项目上魔改得来，
+本项目的目标是做个 autoxjs （新的开源 autojs）项目的开发工具包，即 autox-cli 
+满足工程化（远离刀耕火种）：自动化管理个js类库，自动对源码，编译、混淆、dex加密、打包、部署，让开发人员专心写业务。
+当然要实现 工程化，你需要有一些nodejs开发基础知识。到目前为止尚未封装出cli和dex加密，但是已经实现了除此之外的所以功能，所以刚开始你会看到很多文件，请不要害怕，只关心下面文档中提到的几个文件即可。
 
+项目 直接将编译和的js 转换为 class 转换为 dex 没有实现自动化，(除非一开发的功能要授权之类的，其他情况下没有必要，转换为dex。要收费授权，和autojs设计的初衷和开源协议都是背离的。)下一步将主要解决这个问题。欢迎有兴趣的fork项目一起实现。
+关于并项目的混淆能力，是采用原作者采用 v6 的得来，是可以值得信赖，混淆后的想还原是比较困难的，当然破解授权之类的要用dex加密，在apk 加固，这种方式可以以绝后患。
 
--2. 无法加载文件, 因为在此系统上禁止运行脚本。 cmd管理员执行该代码 `set-ExecutionPolicy RemoteSigned`    
+# 使用方法
+1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
+2.  安装vscode 并安装 autoxjs开发插件即：Auto.js-VSCodeExt-Fixed 注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
+3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
+4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/snailuncle/webpack-autojs ``` 
+    
+5. cmd 到项目 ， 运行命令，安装依赖
+    ```npm install --registry=https://registry.npm.taobao.org ```
 
--1. 需要全局安装webpack webpack-cli `npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org`   
+6.  到这来基本上可以说 开发环境 就完成了，（你还要一部手安装 autoxjs），下面说 这项目的配置文件和开发的形式。
 
-0. 功能: 打包autojs, 不论单个文件, 还是多个文件, 不管有ui还是没ui, 都可以正常打包使用
-1. 下载仓库    
+# 项目开发、编译、打包、部署介绍
 
-    `git clone https://github.com/snailuncle/webpack-autojs`
-2. 命令行     
-    `npm install --registry=https://registry.npm.taobao.org`
-3. 复制autojs项目的入口文件路径到`entry.txt`
-4. 命令行 `webpack`
-5. 打包后的文件在`dist`目录下
+1. work 目录： 这就是我们项目的总目录，即这里面每一个文件夹是一个autoxjs 项目。比如我们 demo,demo1,dy 即为3个项目。 
+2. scriptConfig.js 文件： 我们要如何编译项目即在这个文件中配置，打开文件，有注释的可以按照注释改。
+3. header.txt 无关紧要的文件，里面的内容会原封不动的添加到 编译后的js代码头部
+4. 调整好上面 3处内容 就可用编译了我们的项目了
+5. package.json 这个文件规定 看 第6-9行，有两个命令 start 和 build 分别对应开发环境和生成环境的编译，无需修改。只要知道他们 分别对应 npm run start 和 npm run build 。
+6. 运行 ```npm run start ``` 即开发环境，没每次修改代码，代码会自动编译，并且 scriptConfig.js 中的wath配置为'rerun'或'deploy' 那么代码将自动在手机中运行 或自动将重新编译的项目保存到手机中。
+7. dist目录： 运行上面编译命令（ start或build），就有编译的结果，编译的结果就 dist目录中，这目录下每一个目录代表的就是一个编译后的autoxjs项目.编译后的目录的名称 可以配置一个前缀，以便和编译前的项目区分（当他们都以项目形式保存手中的时候就很有必要）。
+8.``` npm run start ``` 这个
 
-其他说明: 
+# 其他说明1: 
 1. 主要配置文件就一个`scriptConfig.js`
-2. `scriptNamePrefix`是文件前缀, 可以为打包后的文件加一个文件前缀, 比如打包`index.js`, 前缀为`测试_`, 那么打包后的文件名就是`测试_index.js`
-3. `header.txt` 该文件中的内容会被添加到打包后的文件的头部, 默认为空.
-4. `uiMode` true: ui模式, false 非ui模式
-5.  `base64`webpack打包后是否base64编码
-6.  `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
+2. `header.txt` 该文件中的内容会被添加到打包后的文件的头部, 默认为空.
+3. `uiMode` true: ui模式, false 非ui模式
+4.  `base64`webpack打包后是否base64编码
+5.  `base64RandomStrLength`base64编码后, 在字符串前面添加的随机字符长度
+6.  common 这目录是想放在公共通用包，页希望有 要用的符合 闭包规范的autoxjs的lib可以提供，我知道一个叫 [autojs_sdk](https://github.com/kangour/autojs_sdk) 还行，但是这个封装还是不够，我解决还可以有更好的。
+7.  plugin 这目录是自定义 webpack 插件，为编译和自动化服务，一般无需关心。
 
-其他说明2:
+# 其他说明2:
 1. 目前支持的ui有四种, ` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `
 2. 如果layoutContent是一个字符串变量, 而不是xml的话, 可以尝试, 将`floaty.window`定义为`floatyWindow`, 其他的` ui.layout, ui.inflate, floaty.rawWindow, floaty.window `也一样:
 ```
 let floatyWindow = floaty.window;
 var w = floatyWindow(layoutContent);
+
 ```
 3. loader文件是`node_modules\webpack-autojs-loader\index.js`
 
-其他说明3:
+# 其他说明3:
 1. webview打包推荐: `https://github.com/molysama/auto.pro`
 2. require只能用相对路径, webpack才能正常打包
-3. require如果用绝对路径, 请使用global.require代替  如global.require("/sdcard/module1.js")
+3. require如果用绝对路径, 请使用global.require代替  如global.require("D:\\module1.js")
 
-## 常见错误
+# 常见错误
 1. xml中使用了圆括号, 由于loader使用了正则匹配, 圆括号会影响正则, 请使用中文括号
 2. require使用了绝对路径, 请避免使用绝对路径,
 3. 如果require用了绝对路径, webpack是找不到的, webpack是电脑使用的工具, 不是手机使用的工具,他找不到/sdcard, 请使用global.require代替
