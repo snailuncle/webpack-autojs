@@ -1,55 +1,43 @@
-const process = require("process");
-const fs = require("fs");
-const fs1 = require("fs").promise;
 const path = require("path");
+const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
 const SetHeader = require("./plugin/SetHeader");
-const HelloWorldPlugin = require("./plugin/HelloWorldPlugin");
+const WatchDeployPlugin = require("./plugin/WatchDeployPlugin");
 const CopyPlugin = require('copy-webpack-plugin');
-const scriptConfig = require("./scriptConfig");
+var scriptConfig = require('./scriptConfig.js');
 
-var getFilenames = function (scriptConfig) {
-  let filePaths = []
-  scriptConfig.packProjects.forEach(packProject => {
-    let tmpName = scriptConfig.baseDir + packProject + '/' + scriptConfig.entryFile
-    filePaths.push({ project: packProject, fileName: tmpName })
-  })
-  return filePaths;
-};
-var getCopyFileConfig = function (scriptConfig) {
-  let copyPaths = []
-  scriptConfig.packProjects.forEach(packProject => {
-    let config = {
-      from: path.resolve(__dirname, scriptConfig.baseDir + packProject).replace(/\\/g, '/'),
-      to: packProject,
-      globOptions: {
-        ignore: [
-          '**/*.js',
-          '**/*.ts',
-        ],
-      },
+var headerFile = path.resolve(__dirname, scriptConfig.header);
+var headerText = fs.readFileSync(headerFile, "utf8").trim();
+
+var dist = "./dist";
+var entry = {};
+var copyPatterns = [];
+scriptConfig.projects.forEach(project => {
+  var projectName=project.name;
+  var outProjectName="b"+project.name;
+  var outPathName = path.posix.resolve("/", outProjectName, project.main);
+  outPathName = outPathName.replace(".js", "");
+  var entryPathName = path.posix.resolve(scriptConfig.baseDir, projectName, project.main);
+  entry[outPathName] = entryPathName;
+  var fronPath= path.posix.resolve(scriptConfig.baseDir, projectName).replace(/\\/g, '/')+"";
+  var toPath= path.posix.resolve(dist, outProjectName).replace(/\\/g, '/')+"";
+  var pattern = {
+    from: fronPath,
+    to:toPath,
+    globOptions:{
+      ignore: ['**/*.js', '**/*.ts'] 
     }
-
-    copyPaths.push(config)
-  })
-
-  return copyPaths;
-};
-// entry配置 根据入口文件的类型来分别配置
-
-let filenames = getFilenames(scriptConfig);
-let resultEntry = {}
-let copyFileConfig = getCopyFileConfig(scriptConfig)
-console.log('copyFileConfig+++++', copyFileConfig)
-
-resultEntry = { "demo1/main": "./work/demo1/main.js", "dy/mt": "./work/dy/dy.js" }
+  };
+ // console.error(pattern);
+  copyPatterns.push(pattern);
+});
 module.exports = function (env, argv) {
   return {
-    entry: resultEntry,
+    entry: entry,
     output: {
       filename: "[name].js",
-      path: path.resolve(__dirname, "./dist"),
+      path: path.resolve(__dirname, dist),
     },
     target: scriptConfig.target,
     mode: argv.production ? 'production' : 'development',
@@ -112,19 +100,24 @@ module.exports = function (env, argv) {
         // // 转义为Unicode，会大大增加体积，还原也比较容易，建议只对小文件使用
         unicodeEscapeSequence: false,
       }),
-      new SetHeader({ options: true }),
+      new SetHeader({
+        uiMode: scriptConfig.uiMode,
+        base64: scriptConfig.base64,
+        advancedEngines: scriptConfig.advancedEngines,
+        header: headerText
+      }),
       new CleanWebpackPlugin({
         cleanStaleWebpackAssets: false,
         protectWebpackAssets: false,
         cleanOnceBeforeBuildPatterns: [],
         cleanAfterEveryBuildPatterns: ["bundle.js"],
       }),
-      new HelloWorldPlugin(),
       new CopyPlugin({
-        patterns: copyFileConfig,
-        options: {
-          concurrency: 100,
-        },
+        patterns: copyPatterns,
+      
+      }),
+      new WatchDeployPlugin({
+        type:scriptConfig.watch
       }),
     ],
     module: {
