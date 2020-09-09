@@ -1,7 +1,7 @@
 # 概述
 本项目是在 https://github.com/snailuncle/webpack-autojs 项目上魔改得来，
 
-本项目的目标是做个 autoxjs （新的开源 autojs）项目的开发工具包，即 autox-cli   
+本项目的目标是做个 [autoxjs](https://github.com/kkevsekk1/AutoX) （新的开源 autojs）项目的开发工具包，即 autox-cli   
 满足工程化（远离刀耕火种）：自动化管理个js类库，自动对源码，编译、混淆、dex加密、打包、部署，让开发人员专心写业务。   
 当然要实现 工程化，你需要有一些nodejs开发基础知识。到目前为止尚未封装出cli和dex加密，但是已经实现了除此之外的所以功能， 
 所以刚开始你会看到很多文件，请不要害怕，只关心下面文档中提到的几个文件即可。   
@@ -13,7 +13,7 @@
 
 # 使用方法
 1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
-2.  安装vscode 并安装 autoxjs开发插件即：Auto.js-VSCodeExt-Fixed 注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
+2.  安装[vscode](https://code.visualstudio.com/) 并安装 autoxjs开发插件即：[Auto.js-VSCodeExt-Fixed](https://marketplace.visualstudio.com/items?itemName=aaroncheng.auto-js-vsce-fixed)  注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
 3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
 4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/snailuncle/webpack-autojs ``` 
     
