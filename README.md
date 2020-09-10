@@ -15,7 +15,7 @@
 1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
 2.  安装[vscode](https://code.visualstudio.com/) 并安装 autoxjs开发插件即：[Auto.js-VSCodeExt-Fixed](https://marketplace.visualstudio.com/items?itemName=aaroncheng.auto-js-vsce-fixed)  注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
 3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
-4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/snailuncle/webpack-autojs ``` 
+4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/kkevsekk1/webpack-autojs.git ``` 
     
 5. cmd 到项目 ， 运行命令，安装依赖
     ```npm install --registry=https://registry.npm.taobao.org ```
@@ -70,3 +70,6 @@ var w = floatyWindow(layoutContent);
 
 ## so中执行autojs脚本, 可以参考此仓库
 [autojsNativeJs](https://github.com/snailuncle/autojsNativeJs)
+
+## 重要说明
+今天（2020年9月10日19:12:48）打算将js代码 转换出.d.ts 文件，用于做 在vscode 中添加提示功能的时候，发现了了 [auto.pro](https://github.com/molysama/auto.pro)，虽然名字叫pro，这应该不是原作者的 项目吧？ 我发现我做的很多功能 完全没有必要再做了，在这个项目里就有，我都差点直接放弃继续完善这个项目， 似乎去升级java 代码里的功能才是王道。后来认真的阅读了他的文档，我打算继续更新，只是ts和cli的支持，以及编译编译dex 这些功能将不在自己来写，引用和集成 他们的命令。
