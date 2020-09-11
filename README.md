@@ -8,8 +8,12 @@
 项目 直接将编译和的js 转换为 class 转换为 dex 没有实现自动化，   
 (除非一开发的功能要授权之类的，其他情况下没有必要，转换为dex。要收费授权，和autojs设计的初衷和开源协议都是背离的。)   
 下一步将主要解决这个问题。欢迎有兴趣的fork项目一起实现。     
-关于并项目的混淆能力，是采用原作者采用 v6 的得来，是可以值得信赖，混淆后的想还原是比较困难的，  
-当然破解授权之类的要用dex加密，在apk 加固，这种方式可以以绝后患。   
+## 项目特性清单
+- [x] js源码自动编译，混淆、打包、部署手机、重新运行
+- [x] vscode 自动提示方法、和说明，有一部分待完善，欢迎pull代码
+- [x] 编译后的js 打包成 dex
+- [x] 多项目管理
+- [ ] 自动识别ui模块 （有人愿意写或[修改插件](https://github.com/kkevsekk1/autojs-dev/blob/master/src/plugins/autojs-ui.ts) 欢迎pull 代码）
 
 # 使用方法
 1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
@@ -32,6 +36,13 @@
 6. 运行 ```npm run start ``` 即开发环境，没每次修改代码，代码会自动编译，并且 scriptConfig.js 中的wath配置为'rerun'或'deploy' 那么代码将自动在手机中运行 或自动将重新编译的项目保存到手机中。
 7. dist目录： 运行上面编译命令（ start或build），就有编译的结果，编译的结果就 dist目录中，这目录下每一个目录代表的就是一个编译后的autoxjs项目.编译后的目录的名称 可以配置一个前缀，以便和编译前的项目区分（当他们都以项目形式保存手中的时候就很有必要）。
 8.``` npm run start ``` 这个
+
+# 编译 dex
+1. [使用工具](https://github.com/molysama/auto.pro/wiki/dex) 的来源。我用这个工具来打包，不打算重复造轮子了
+2. [安装jre](https://www.baidu.com/s?ie=UTF-8&wd=jre)   
+3. 安装 auto-cli ``` npm i "@auto.pro/cli" -g ```
+4. 运行编译命令 ``` auto-cli dex ./dist/demo/main.js ``` 
+5. 如果由于愿意写个 webpapck 插件 ，来执行这里几个命令，实现自动化愿意 pull 代码，我没打算对我的代码 编译为dex 再加固，所以没有动力实现这个插件！
 
 # 其他说明1: 
 1. 主要配置文件就一个`scriptConfig.js`
