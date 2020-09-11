@@ -32,9 +32,6 @@
     "webpack-obfuscator": "^0.18.7"
   },
   "dependencies": {
-    "@auto.pro/action": "^7.x",
-    "@auto.pro/core": "^7.x",
-    "@auto.pro/search": "^7.x",
     "@babel/polyfill": "^7.4.0",
     "es6-shim": "^0.35.5",
     "randomstring": "^1.1.5",

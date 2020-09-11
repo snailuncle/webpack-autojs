@@ -71,5 +71,5 @@ var w = floatyWindow(layoutContent);
 ## so中执行autojs脚本, 可以参考此仓库
 [autojsNativeJs](https://github.com/snailuncle/autojsNativeJs)
 
-## 重要说明
-今天（2020年9月10日19:12:48）打算将js代码 转换出.d.ts 文件，用于做 在vscode 中添加提示功能的时候，发现了了 [auto.pro](https://github.com/molysama/auto.pro)，虽然名字叫pro，这应该不是原作者的 项目吧？ 我发现我做的很多功能 完全没有必要再做了，在这个项目里就有，我都差点直接放弃继续完善这个项目， 似乎去升级java 代码里的功能才是王道。后来认真的阅读了他的文档，我打算继续更新，只是ts和cli的支持，以及编译编译dex 这些功能将不在自己来写，引用和集成 他们的命令。
+## 使用webview，等方式构建应用
+[auto.pro](https://github.com/molysama/auto.pro) 可以ts 来编写脚本，构建应用。 如果希望该项目应用 自动部署到手机等功能，请自行配置webpack.config.js即可
