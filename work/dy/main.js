@@ -5,21 +5,21 @@ ui.layout(
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <horizontal>
             <checkbox w="auto" id="pldz" text="评论点赞" checked="true" />
-            <input w="auto" id="numpldz" minWidth="50" inputType="number" text="20" />
+            <input w="auto" id="numpldz" minWidth="50" inputType="number" text="7" />
             <text w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
             <checkbox w="auto" id="plrzpdz" text="评论人作品点赞" checked="true" />
-            <input w="auto" id="numplrzpdz" minWidth="50" inputType="number" text="10" />
+            <input w="auto" id="numplrzpdz" minWidth="50" inputType="number" text="5" />
             <text w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
             <checkbox w="auto" id="plrzppl" text="评论人作品评论" checked="true" />
-            <input w="auto" id="numplrzppl" minWidth="50" inputType="number" text="10" />
+            <input w="auto" id="numplrzppl" minWidth="50" inputType="number" text="5" />
             <text w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
-            <checkbox w="auto" id="sleepTime" text="跑完休息时间" checked="false" />
+            <checkbox w="auto" id="sleepTime" text="跑完休息时间" checked="true" />
             <input w="auto" id="numsleepTime" minWidth="50" inputType="number" text="0.1" />
             <text w="auto" text="分钟" />
         </horizontal>
@@ -51,7 +51,7 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 12.6);
+    toast("开始干活：版本" + 12.7);
     getConfig();
     main();
 
@@ -157,18 +157,21 @@ function main() {
         }
     })
 }
-function exitApp(){
-    log("---任务退出----");
-    waitTime(10);
+
+
+function gotoMy(){
     while(true){
        var t= text("我").findOnce();
        if(t==null){
            back();
            sleep(1000);
        }else{
-           break;
+           return true;
        } 
     }
+}
+function cleanCache(){
+    log("---任务退出----");
     maid.clickTextCenter("我");
     console.hide();
     common.waitTime(2, "隐藏日志点击更多----");
@@ -187,14 +190,28 @@ function exitApp(){
     maid.clickTextCenter("清空");
     waitTime(5);
     maid.clickTextCenter("清空");
+    currentVideo=-1;
+    
+}
+
+function openOrCloseFly(){
     common.resetConsole(0,700);
     common.swipeRandom(300,0,400,1000,200);
     waitTime(3);
     common.swipeRandom(300,0,400,1000,200);   
     waitTime(3);
     click(92,304);
-    waitTime(1);
+    waitTime(3);
     common.swipeRandom(300,500,400,0,500);   
+    waitTime(3);
+    common.swipeRandom(300,500,400,0,500);   
+}
+
+function exitApp(){
+    waitTime(10);
+    gotoMy();
+    cleanCache();
+    openOrCloseFly();
     var x=0;
     console.clear();
     console.hide();
@@ -254,8 +271,6 @@ function tofirst() {
     }
     key = CHANGETASK;
 }
-
-
 
 function choise() {
     pauseTask();
@@ -391,16 +406,24 @@ function changeTask() {
 
 function test() {
      return;
-    featureindex = 2;
+    featureindex = 1;
     currentVideo = 0;
-    desVideo = 5;
+    desVideo = 1;
     totalTask = 10;
-    key = 199;
+    key = CHANGETASK;
 }
 
+
 function feature4() {
-    waitTime(sleepTime*2, "正在执行休息");
-    key = CHANGETASK;
+    gotoMy();
+    cleanCache();
+    openOrCloseFly();
+    gotoMy();
+    waitTime(sleepTime*2, "正在执行休息---");
+    openOrCloseFly();
+    gotoMy();
+    waitTime(20);
+    key = MY;
 }
 
 //第一个作品，后，如果没有第一个作品，返回到评论页，
@@ -411,7 +434,7 @@ function clickFirst() {
         log(into.text());
         var notZp = text("作品 0").findOnce();
         if (notZp != null) {
-            log("没有作品");
+            log("没有作品 ");
             back();
             return false;
         } else {
@@ -464,10 +487,10 @@ function toComment() {
             break; //点够10个了
         }
     }
-    var wgs = id("d57").find();
+    var wgs = id("d7w").find();
     var uc = new Array();
     wgs.forEach(element => {
-        if (element.findOne(id("ham")) == null) {
+        if (element.findOne(id("hg5")) == null) {
             uc.push(element);
         }
     });
@@ -506,7 +529,9 @@ function fistClickZanPL() {
     waitTime(2, "进入评论列表");
     log("进入评论列表，没有进入，可以手动点评论")
     textEndsWith("条评论").findOne();
-    var comments = className("android.view.ViewGroup").id("d57").find();
+    log("定在这则需要升级可能抖音版本不对");
+    id("d7w").findOne();
+    var comments = id("d7w").find();
     for (let index = 1; index < comments.length - 1; index++) {
         logTask();
         var name = findName(comments[index])
@@ -517,7 +542,7 @@ function fistClickZanPL() {
         doneMap.put(name, 1);
         waitTime(3, "检测第" + currentTask + "个【" + name + "】")
         //点击数组里面第几个孩子的某个选择器,头像的id
-        maid.clickMultiChildIndex(comments, id("bji"), index);
+        maid.clickMultiChildIndex(comments, id("blh"), index);
         var have = clickFirst();
         if (!have) {
             log("跳过，下一个")
@@ -542,7 +567,7 @@ function fistClickZanPL() {
             className("android.widget.EditText").findOne().setText(getHs());
             log("停留在这里，说明id发生了变化，手动点点击输入框试试");
             while (true) {
-                var t = id("agv").findOne(1000);
+                var t = id("ai_").findOne(1000);
                 if (t != null) {
                     t.click();
                     break;
@@ -569,9 +594,7 @@ function fistClickZanPL() {
             return;
         }
     }
-    waitTime(4);
     nextPage();
-    waitTime(2);
 }
 
 function findName(wg) {

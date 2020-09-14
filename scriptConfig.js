@@ -9,7 +9,7 @@ var projects = [ //项目数组，放的是每一个要编译的项目，
   {
     id:2,
     name: "dy",
-    main: "./dy.js"
+    main: "./main.js"
   },
 ]
 
