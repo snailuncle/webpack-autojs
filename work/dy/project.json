@@ -1,5 +1,5 @@
 {
-    "name": "抖音点赞",
+    "name": "抖音截流",
     "main": "main.js",
     "ignore": [
         "build"
