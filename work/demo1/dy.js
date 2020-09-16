@@ -1,5 +1,5 @@
 toast("hello1");
-toastLog("");
+toastLog("1");
 console.show();
 id("name").find().text();
 
