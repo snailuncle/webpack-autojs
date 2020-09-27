@@ -24,9 +24,9 @@ ui.layout(
             <TextView w="auto" text="分钟" />
         </horizontal>
         <button id="hssz" text="话术设置" />
-        <button id="ok1" text="准备抖音,按返回键退出" />
+        <button id="ok1" text="准备抖音, 按返回键退出" />
         <button id="ok" text="开始干活" />
-        <TextView w="auto" id="note" text="" />
+        <TextView w="auto" id="note"  text="" />
     </vertical>
 );
 var Maid = require("./Maid.js");
@@ -51,7 +51,7 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 12.8);
+    toast("开始干活：版本" + 12.9);
     getConfig();
     main();
 
@@ -94,7 +94,7 @@ function getConfig() {
     log("点赞" + pldzTotal);
     log("作品点赞" + plrzpdzTotal);
     log("作品评论" + plrzpplTotal);
-    log("休息时间" + sleepTime);
+    log("休息时间 " + sleepTime);
 }
 var wbhss;
 var bqhss;
@@ -107,7 +107,7 @@ function readhs() {
 }
 
 var maid = new Maid("com.ss.android.ugc.aweme");
-var key = -1, currentVideo = -1, desVideo = -1, currentTask = -1; totalTask = -1; //当前第几个视频
+var key = -1, currentVideo = 0, desVideo = -1, currentTask = -1; totalTask = -1; //当前第几个视频
 var doneMap = new Map();
 var OPENAPP = 0, MY = 1, FIRST = 3, CHOISE = 4, COMMENT = 5, FIRSTCLICKZANPL = 6, CHANGETASK = 7;
 var thread;
@@ -129,7 +129,7 @@ function main() {
                     open();
                     break;
                 case MY:
-                    my();
+                    startMy();
                     break;
                 case FIRST:
                     tofirst();
@@ -148,7 +148,6 @@ function main() {
                     break;
                 case 199:
                     exitApp();
-                                
                     return;
                 default:
                     break;
@@ -172,7 +171,7 @@ function gotoMy(){
 }
 function cleanCache(){
     log("---任务退出----");
-    maid.clickTextCenter("我");
+    maid.clickTextCenter("我1");
     console.hide();
     common.waitTime(2, "隐藏日志点击更多----");
     maid.clickDescCenter("更多");
@@ -190,7 +189,7 @@ function cleanCache(){
     maid.clickTextCenter("清空");
     waitTime(5);
     maid.clickTextCenter("清空");
-    currentVideo=-1;
+    currentVideo=0;
     
 }
 
@@ -233,7 +232,7 @@ function open() {
     common.waitTime(3, "进入抖音首页");
     key = MY;
 };
-function my() {
+function startMy() {
     common.waitTime(2, "进入抖音[我]");
     text("我").findOne();
     maid.clickTextCenter("我");
@@ -262,18 +261,18 @@ var feature = 1;
 //到第一个,2,3个功能，//
 function tofirst() {
     log("识别照片失败，停留在这，可以用摄像头扫码")
+    waitTime(3);
     textStartsWith("喜欢").findOne();
     maid.clickTextStartCenter("喜欢");
     waitTime(3, "第一个视频");
     clickFistbounds();//点击第一个视频
-    if (currentVideo == -1) {
-        currentVideo = 0;
-    }
-    key = CHANGETASK;
+    key = CHOISE;
 }
-
-function choise() {
+function choise() { //选择第几个视频
     pauseTask();
+    logTask();
+    log("总任务数" + totalTask + "已执行" + currentTask);
+  //  sleep(10000);
     var index = currentVideo - desVideo;
     log("总任务数" + totalTask + "已执行" + currentTask);
     if (currentTask >= totalTask) {//达到目标总数了，退出
@@ -283,13 +282,7 @@ function choise() {
     }
     if (desVideo > config_videos) {//已经变量完15个视频了,
         waitTime(3, "查完前" + config_videos + "个视频，任务未完成");
-        waitTime(3, "返回用户也");
-        back();
-        waitTime(3, "返回扫码页");
-        back();
-        waitTime(3, "返回我的页面");
-        back();
-        currentVideo = 0;
+        gotoMy();
         desVideo = 0; //回到第一个
         key = MY;
         return;
@@ -379,9 +372,7 @@ function changeTask() {
             desVideo = 0;
             totalTask = pldzTotal;
             key = CHOISE;
-            if (currentTask == -1) {
-                currentTask = 0;
-            }
+            currentTask = 0;
             break;
         case 2:
             currentTask = 0;
@@ -487,11 +478,11 @@ function toComment() {
             break; //点够10个了
         }
     }
-    var wgs = id("da4").find();
+    var wgs = id("d8n").find();
     var uc = new Array();
     wgs.forEach(element => {
         //点赞数不存在的
-        if (element.findOne(id("hnc")) == null) {
+        if (element.findOne(id("hhz")) == null) {
             uc.push(element);
         }
     });
@@ -509,18 +500,22 @@ function toComment() {
             numOfClick++;
         }
         if (numOfClick >= 10) {
+            waitTime(3, "赞慢10个换下一个视频");
             log("满10个了")
             break; //点够10个了
         }
     }
     numOfPage++;
     if (numOfPage > config_maxPage || numOfClick >= 10) {
+         numOfClick=0;
+         numOfPage=0;
         waitTime(2, "赞:" + numOfClick + "页：" + numOfPage + "，换下一个");
-        key = CHOISE; //
         back();
         desVideo++;
         waitTime(3);
-        return; //直接返回了,换下一个视频
+        //到choise检测是否完成总任务，没完成则换
+        key = CHOISE; 
+        return; 
     }
     //前面条件都没满足，换下一页
     nextPage();
@@ -531,8 +526,8 @@ function fistClickZanPL() {
     log("进入评论列表，没有进入，可以手动点评论")
     textEndsWith("条评论").findOne();
     log("定在这则需要升级可能抖音版本不对");
-    id("da4").findOne();
-    var comments = id("da4").find();
+    id("d8n").findOne();
+    var comments = id("d8n").find();
     for (let index = 1; index < comments.length - 1; index++) {
         logTask();
         var name = findName(comments[index])
@@ -566,9 +561,9 @@ function fistClickZanPL() {
             className("android.widget.EditText").findOne().click();
             waitTime(1, "进入评论，写评论");
             className("android.widget.EditText").findOne().setText(getHs());
-            log("停留在这里，说明id发生了变化，手动点点击输入框试试");
+            log("停留在这里,说明id发生了变化,手动点点击输入框试试");
             while (true) {
-                var t = id("aji").findOne(1000);
+                var t = id("aj1").findOne(1000);
                 if (t != null) {
                     t.click();
                     break;
@@ -579,11 +574,11 @@ function fistClickZanPL() {
                 }
                 sleep(1000);
             }
-            waitTime(1, "返回视频");
+            waitTime(2, "返回视频");
             back();
-            waitTime(1, "返回用户");
+            waitTime(2, "返回用户");
             back();
-            waitTime(1, "返回评论");
+            waitTime(2, "返回评论");
             back();
         }
         currentTask++;

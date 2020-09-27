@@ -51,7 +51,7 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 12.6);
+    toast("开始干活：版本" + 12.9);
     getConfig();
     main();
 
