@@ -26,13 +26,14 @@ ui.layout(
         <button id="hssz" text="话术设置" />
         <button id="ok1" text="准备抖音, 按返回键退出" />
         <button id="ok" text="开始干活" />
-        <TextView w="auto" id="note"  text="" />
+        <button id="ok3" text="筛选视频" />
+        <TextView w="auto" id="note" text="" />
     </vertical>
 );
 var Maid = require("./Maid.js");
 var common = require("./common.js");
 var Map = require("./Map.js");
-var commonTools =  require("./common.js");
+var commonTools = require("./common.js");
 const { waitTime } = require("./common.js");
 
 ui.autoService.on("check", function (checked) {
@@ -51,7 +52,7 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 12.9);
+    toast("开始干活：版本" + 13.0);
     getConfig();
     main();
 
@@ -60,6 +61,11 @@ ui.ok1.click(function () {
     var appName = "抖音短视频";
     toast("完全打开后，进入主页，按返回，再【开始干活】");
     common.openApp(appName);
+})
+ui.ok3.click(function () {
+    threads.start(function () {
+        main2();
+    });
 })
 
 var tasks;
@@ -119,7 +125,7 @@ function main() {
     }
     thread = threads.start(function () {
         common.resetConsole();
-        myFloaty =floatyWindow();
+        myFloaty = floatyWindow();
         readhs();
         test();
         maid.before(true);
@@ -158,18 +164,18 @@ function main() {
 }
 
 
-function gotoMy(){
-    while(true){
-       var t= text("我").findOnce();
-       if(t==null){
-           back();
-           sleep(1000);
-       }else{
-           return true;
-       } 
+function gotoMy() {
+    while (true) {
+        var t = text("我").findOnce();
+        if (t == null) {
+            back();
+            sleep(1000);
+        } else {
+            return true;
+        }
     }
 }
-function cleanCache(){
+function cleanCache() {
     log("---任务退出----");
     maid.clickTextCenter("我1");
     console.hide();
@@ -178,9 +184,9 @@ function cleanCache(){
     common.waitTime(2, "设置");
     console.hide();
     maid.clickTextCenter("设置");
-    ui.run(function(){
-        setPosit(0,0);
-     });
+    ui.run(function () {
+        setPosit(0, 0);
+    });
     nextPage();
     nextPage();
     nextPage();
@@ -189,40 +195,40 @@ function cleanCache(){
     maid.clickTextCenter("清空");
     waitTime(5);
     maid.clickTextCenter("清空");
-    currentVideo=0;
-    
+    currentVideo = 0;
+
 }
 
-function openOrCloseFly(){
-    common.resetConsole(0,700);
-    common.swipeRandom(300,0,400,1000,200);
+function openOrCloseFly() {
+    common.resetConsole(0, 700);
+    common.swipeRandom(300, 0, 400, 1000, 200);
     waitTime(3);
-    common.swipeRandom(300,0,400,1000,200);   
+    common.swipeRandom(300, 0, 400, 1000, 200);
     waitTime(3);
-    click(92,304);
+    click(92, 304);
     waitTime(3);
-    common.swipeRandom(300,500,400,0,500);   
+    common.swipeRandom(300, 500, 400, 0, 500);
     waitTime(3);
-    common.swipeRandom(300,500,400,0,500);   
+    common.swipeRandom(300, 500, 400, 0, 500);
 }
 
-function exitApp(){
+function exitApp() {
     waitTime(10);
     gotoMy();
     cleanCache();
     openOrCloseFly();
-    var x=0;
+    var x = 0;
     console.clear();
     console.hide();
-    while(true){
-        if(x>20){
+    while (true) {
+        if (x > 20) {
             break;
         }
         sleep(500);
         back();
         x++;
     }
- 
+
 }
 
 
@@ -272,7 +278,7 @@ function choise() { //选择第几个视频
     pauseTask();
     logTask();
     log("总任务数" + totalTask + "已执行" + currentTask);
-  //  sleep(10000);
+    //  sleep(10000);
     var index = currentVideo - desVideo;
     log("总任务数" + totalTask + "已执行" + currentTask);
     if (currentTask >= totalTask) {//达到目标总数了，退出
@@ -298,7 +304,7 @@ function choise() { //选择第几个视频
             currentVideo--;
         }
     }
-    maid.click(device.width/2,device.height/2);
+    maid.click(device.width / 2, device.height / 2);
     waitTime(3, "点击评论")
     maid.click(668, 678); //点击评论，进入评论页
     waitTime(3, "页面跳转冷却")
@@ -315,7 +321,7 @@ function choise() { //选择第几个视频
     }
 }
 function getHs() {
-    var min =0;
+    var min = 0;
     var rs = wbhss[commonTools.random(min, wbhss.length - 1)];
     if (rs == "" || rs == null) {
         rs = "很好看哟";
@@ -353,12 +359,12 @@ function changeTask() {
     } else {
         featureindex++;
     }
-    log("循环？"+isCirculate);
-    log("index"+featureindex + tasks.length);
+    log("循环？" + isCirculate);
+    log("index" + featureindex + tasks.length);
     if (!isCirculate) {
         if (featureindex >= tasks.length) {
             waitTime(30, "清理现场退出程序了");
-            key=199;
+            key = 199;
             return;
         }
     }
@@ -396,7 +402,7 @@ function changeTask() {
 }
 
 function test() {
-     return;
+    return;
     featureindex = 1;
     currentVideo = 0;
     desVideo = 1;
@@ -410,7 +416,7 @@ function feature4() {
     cleanCache();
     openOrCloseFly();
     gotoMy();
-    waitTime(sleepTime*2, "正在执行休息---");
+    waitTime(sleepTime * 2, "正在执行休息---");
     openOrCloseFly();
     gotoMy();
     waitTime(20);
@@ -433,9 +439,9 @@ function clickFirst() {
             clickFistbounds();
             return true;
         }
-    }else{
-        var x=textEndsWith("条评论").findOnce();
-        if(x!=null){
+    } else {
+        var x = textEndsWith("条评论").findOnce();
+        if (x != null) {
             log("本该在用页，准备点击第一个作品，但是没有进入");
             return false;
         }
@@ -478,11 +484,11 @@ function toComment() {
             break; //点够10个了
         }
     }
-    var wgs = id("d8n").find();
+    var wgs = id("d8c").find();
     var uc = new Array();
     wgs.forEach(element => {
         //点赞数不存在的
-        if (element.findOne(id("hhz")) == null) {
+        if (element.findOne(id("hht")) == null) {
             uc.push(element);
         }
     });
@@ -507,15 +513,15 @@ function toComment() {
     }
     numOfPage++;
     if (numOfPage > config_maxPage || numOfClick >= 10) {
-         numOfClick=0;
-         numOfPage=0;
+        numOfClick = 0;
+        numOfPage = 0;
         waitTime(2, "赞:" + numOfClick + "页：" + numOfPage + "，换下一个");
         back();
         desVideo++;
         waitTime(3);
         //到choise检测是否完成总任务，没完成则换
-        key = CHOISE; 
-        return; 
+        key = CHOISE;
+        return;
     }
     //前面条件都没满足，换下一页
     nextPage();
@@ -526,8 +532,8 @@ function fistClickZanPL() {
     log("进入评论列表，没有进入，可以手动点评论")
     textEndsWith("条评论").findOne();
     log("定在这则需要升级可能抖音版本不对");
-    id("d8n").findOne();
-    var comments = id("d8n").find();
+    id("d8c").findOne();
+    var comments = id("d8c").find();
     for (let index = 1; index < comments.length - 1; index++) {
         logTask();
         var name = findName(comments[index])
@@ -538,14 +544,14 @@ function fistClickZanPL() {
         doneMap.put(name, 1);
         waitTime(3, "检测第" + currentTask + "个【" + name + "】")
         //点击数组里面第几个孩子的某个选择器,头像的id
-        maid.clickMultiChildIndex(comments, id("jw"), index);
+        maid.clickMultiChildIndex(comments, id("jv"), index);
         var have = clickFirst();
         if (!have) {
             log("跳过，下一个")
             continue;
         }
         waitTime(4, "准备点赞")
-        maid.click(device.width/2, device.height/2);
+        maid.click(device.width / 2, device.height / 2);
         if (feature == 2) {
             //点赞
             log("点赞")
@@ -563,7 +569,7 @@ function fistClickZanPL() {
             className("android.widget.EditText").findOne().setText(getHs());
             log("停留在这里,说明id发生了变化,手动点点击输入框试试");
             while (true) {
-                var t = id("aj1").findOne(1000);
+                var t = id("aj7").findOne(1000);
                 if (t != null) {
                     t.click();
                     break;
@@ -643,16 +649,16 @@ function pauseTask() {
     if (isPause) {
         waitTime(1, "任务已经暂停，请记住该页面，恢复的时候请保证停留在这里");
         console.hide();
-        ui.run(function(){
-           setTxt("已暂停");
+        ui.run(function () {
+            setTxt("已暂停");
         });
         var i = 0;
         while (true) {
             if (!isPause) {
                 common.resetConsole();
                 waitTime(1, "---任务已恢复---");
-                ui.run(function(){
-                   setTxt("运行中");
+                ui.run(function () {
+                    setTxt("运行中");
                 });
                 return;
             }
@@ -666,51 +672,154 @@ function pauseTask() {
     }
 }
 
-var window ;
-function floatyWindow(){
-   window= floaty.window(
+var window;
+function floatyWindow() {
+    window = floaty.window(
         <frame>
-            <button id="action" text="运行中" w="90" h="40" bg="#77ffffff"/>
+            <button id="action" text="运行中" w="90" h="40" bg="#77ffffff" />
         </frame>
     );
-    window.setPosition(device.width-180, 100);
+    window.setPosition(device.width - 180, 100);
     window.exitOnClose();
-    window.action.click(()=>{
+    window.action.click(() => {
         //运行中---即将暂停--暂停中--即将恢复---运行中
-        if(window.action.getText() == '运行中'){
-            isPause=true;
+        if (window.action.getText() == '运行中') {
+            isPause = true;
             log("任务即将暂停---请耐心等待----");
             log("任务即将暂停---请耐心等待----");
             log("任务即将暂停---请耐心等待----");
             window.action.setText('即将暂停');
-        }else if(window.action.getText() == '即将暂停'){
-            isPause=true;
-        }else if(window.action.getText() == '已暂停'){
-            isPause=false;
+        } else if (window.action.getText() == '即将暂停') {
+            isPause = true;
+        } else if (window.action.getText() == '已暂停') {
+            isPause = false;
             log("马上恢复任务---请耐心等待----");
             log("马上恢复任务---请耐心等待----");
             log("马上恢复任务---请耐心等待----");
             window.action.setText('即将恢复');
-        }else if(window.action.getText() == '即将恢复'){
-            isPause=false;
+        } else if (window.action.getText() == '即将恢复') {
+            isPause = false;
         }
     });
-    window.action.longClick(()=>{
-       window.setAdjustEnabled(!window.isAdjustEnabled());
-       return true;
-    }); 
+    window.action.longClick(() => {
+        window.setAdjustEnabled(!window.isAdjustEnabled());
+        return true;
+    });
 }
 
-function setPosit(x,y){
+function setPosit(x, y) {
     window.setPosition(x, y);
 };
-function setTxt(txt){
+function setTxt(txt) {
     window.action.setText(txt);
 };
+// 推荐页视频，评论200以上的，
+// 评论前五页有三个以上评论时间为“刚刚”的
+// 点赞
+
+/****功能分解*****/
+//1.打开app
+//2.分析品论数
+//3.分析前五页“刚刚”评论的数量
+//3.1 滚动品论区
+//3.2 查找“刚刚”
+//4.复合条件的视频点赞
+
+DyDinaZan = {}; //评论滚动控件id：com.ss.android.ugc.aweme:id/f59
+
+DyDinaZan.openApp = function () {
+    var appName = "抖音短视频";
+    log("正在打开抖音app");
+    launchApp(appName);
+    waitTime(10,"正在打开"+appName);
+}
+
+DyDinaZan.openComment = function () {
+    log("打开评论");
+    click(500, 500);
+    var pl = className("android.widget.LinearLayout").descStartsWith("评论").findOne();
+    var info = pl.desc();
+    var needdo = false;
+    if (info.indexOf("w") != -1) {
+        needdo = true;
+    }
+    var infoNumber = info.match(/-?([1-9]\d*(\.\d*)*|0\.[1-9]\d*)/g);
+    log(infoNumber);
+    if (parseInt(infoNumber)>200) {
+        needdo = true;
+    }
+    if (needdo) {
+        log(info);
+        log("满足要求数量要求");
+        pl.click();
+    }
+    waitTime(3);
+    return needdo;
+}
+DyDinaZan.analysisComment = function () {
+    waitTime(1,"分析刚刚的的数量")
+    var validCommentCount = 0;
+    var pageNum = 0;
+    for (var i = 0; i < 5; i++) {
+        //处理当前页
+        pageNum++;
+       var gg= text("刚刚").find();
+        validCommentCount+=gg.length;
+        if(validCommentCount>=3){
+            waitTime(1,"功能找到"+validCommentCount+"個,返回点赞了")
+            return true;
+        }
+        if (text("暂时没有更多了").findOnce()!=null) {
+            log("暂时没有更多了");
+            break;
+        }
+        waitTime(1,"下一页");
+        nextPage();
+        waitTime(2);
+    }
+    return false;
+}
+
+//点赞
+DyDinaZan.giveTheThumbsUp = function () {
+    var comment = className("android.widget.LinearLayout").descStartsWith("未选中").findOnce();
+    if(comment!=null){
+        comment.click();
+    }
+    waitTime(3);
+}
+function main2() {
+    common.resetConsole();
+    log("开始");
+    DyDinaZan.openApp();
+    while (true) {
+        waitTime(5);
+        var liveBroadcast = text("点击进入直播间").findOne(1000);
+        if (liveBroadcast != null) {
+            log("划过直播间");
+            nextVideo();
+            continue;
+        }
+        if (!DyDinaZan.openComment()) {
+            nextVideo();
+            continue;
+        }
+        var canGiveTheThumbsUp = DyDinaZan.analysisComment();
+        waitTime(2,"返回---");
+        back();
+        if (canGiveTheThumbsUp) {
+            log("满足点赞条件---");
+            DyDinaZan.giveTheThumbsUp();
+        }
+        nextVideo();
+    }
+}
+
+
 setInterval(
-    function(){
-    },1000
-  )
+    function () {
+    }, 1000
+)
 
 
 
