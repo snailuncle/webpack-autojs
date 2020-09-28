@@ -760,7 +760,7 @@ DyDinaZan.analysisComment = function () {
     waitTime(1,"分析刚刚的的数量")
     var validCommentCount = 0;
     var pageNum = 0;
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 8; i++) {
         //处理当前页
         pageNum++;
        var gg= text("刚刚").find();
@@ -775,25 +775,26 @@ DyDinaZan.analysisComment = function () {
         }
         waitTime(1,"下一页");
         nextPage();
-        waitTime(2);
+        waitTime(1);
     }
     return false;
 }
 
 //点赞
 DyDinaZan.giveTheThumbsUp = function () {
-    var comment = className("android.widget.LinearLayout").descStartsWith("未选中").findOnce();
+    var comment = className("android.widget.LinearLayout").descStartsWith("未选中，喜欢").findOnce();
     if(comment!=null){
+        waitTime(1,"点赞");
         comment.click();
     }
-    waitTime(3);
+    waitTime(1);
 }
 function main2() {
     common.resetConsole();
     log("开始");
     DyDinaZan.openApp();
     while (true) {
-        waitTime(5);
+        waitTime(1);
         var liveBroadcast = text("点击进入直播间").findOne(1000);
         if (liveBroadcast != null) {
             log("划过直播间");
@@ -805,7 +806,7 @@ function main2() {
             continue;
         }
         var canGiveTheThumbsUp = DyDinaZan.analysisComment();
-        waitTime(2,"返回---");
+        waitTime(1,"返回---");
         back();
         if (canGiveTheThumbsUp) {
             log("满足点赞条件---");
@@ -814,8 +815,6 @@ function main2() {
         nextVideo();
     }
 }
-
-
 setInterval(
     function () {
     }, 1000
