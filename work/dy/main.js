@@ -765,7 +765,7 @@ DyDinaZan.analysisComment = function () {
         pageNum++;
        var gg= text("刚刚").find();
         validCommentCount+=gg.length;
-        if(validCommentCount>=3){
+        if(validCommentCount>=2){
             waitTime(1,"功能找到"+validCommentCount+"個,返回点赞了")
             return true;
         }
@@ -773,7 +773,6 @@ DyDinaZan.analysisComment = function () {
             log("暂时没有更多了");
             break;
         }
-        waitTime(1,"下一页");
         nextPage();
         waitTime(1);
     }
