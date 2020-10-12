@@ -19,7 +19,7 @@ function Map() {
         this.values = function () {
             var values = [];
             for (var k in items) {
-                if (this.hasOwnProperty(k)) {
+                if (Object.prototype.hasOwnProperty.call(this, k)) {
                     values.push(items[k]);
                 }
             }
