@@ -44,16 +44,16 @@ common.closeApp = function (name) {
 //sml_move(400, 1000, 800, 600, 1000);
 //此代码由飞云脚本圈整理提供（www.feiyunjs.com）
 function bezier_curves(cp, t) {
-    cx = 3.0 * (cp[1].x - cp[0].x);
-    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
-    ax = cp[3].x - cp[0].x - cx - bx;
-    cy = 3.0 * (cp[1].y - cp[0].y);
-    by = 3.0 * (cp[2].y - cp[1].y) - cy;
-    ay = cp[3].y - cp[0].y - cy - by;
+  var  cx = 3.0 * (cp[1].x - cp[0].x);
+  var  bx = 3.0 * (cp[2].x - cp[1].x) - cx;
+  var  ax = cp[3].x - cp[0].x - cx - bx;
+  var   cy = 3.0 * (cp[1].y - cp[0].y);
+  var  by = 3.0 * (cp[2].y - cp[1].y) - cy;
+  var   ay = cp[3].y - cp[0].y - cy - by;
 
-    tSquared = t * t;
-    tCubed = tSquared * t;
-    result = {
+  var  tSquared = t * t;
+  var tCubed = tSquared * t;
+  var result = {
         "x": 0,
         "y": 0
     };
@@ -84,13 +84,14 @@ common.swipeRandom = function (qx, qy, zx, zy, time) {
         "x": zx,
         "y": zy
     };
+  
     point.push(dx0);
     point.push(dx1);
     point.push(dx2);
     point.push(dx3);
     // log(point[3].x)
     for (let i = 0; i < 1; i += 0.08) {
-        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
+        var  xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
         xxy.push(xxyy);
     }
 
@@ -103,8 +104,7 @@ common.readlines= function (dir) {
     if (!files.exists(dir)) {
         files.create(dir);
     }
-    var m= files.open(dir,"r").readlines();;
-   // log(m)
+    var m= files.open(dir,"r").readlines();
     return m;
 }
 
