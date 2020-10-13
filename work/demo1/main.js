@@ -4,7 +4,7 @@ const { waitTime } = require("./common.js");
 
 function nextVideo() {
     common.waitTime(1, "下一个视频")
-    app.swipe(500, 1000, 580, 480, 2);
+    common.swipeRandom(500, device.height*2/3, 580, device.height/2, 2);
     common.waitTime(3, "冷却")
 }
 
