@@ -14,22 +14,22 @@ var dist = "./dist";
 var entry = {};
 var copyPatterns = [];
 scriptConfig.projects.forEach(project => {
-  var projectName=project.name;
-  var outProjectName=scriptConfig.projectPrefix+project.name;
+  var projectName = project.name;
+  var outProjectName = scriptConfig.projectPrefix + project.name;
   var outPathName = path.posix.resolve("/", outProjectName, project.main);
   outPathName = outPathName.replace(".js", "");
   var entryPathName = path.posix.resolve(scriptConfig.baseDir, projectName, project.main);
   entry[outPathName] = entryPathName;
-  var fronPath= path.posix.resolve(scriptConfig.baseDir, projectName).replace(/\\/g, '/')+"";
-  var toPath= path.posix.resolve(dist, outProjectName).replace(/\\/g, '/')+"";
+  var fronPath = path.posix.resolve(scriptConfig.baseDir, projectName).replace(/\\/g, '/') + "";
+  var toPath = path.posix.resolve(dist, outProjectName).replace(/\\/g, '/') + "";
   var pattern = {
     from: fronPath,
-    to:toPath,
-    globOptions:{
-      ignore: ['**/*.js', '**/*.ts'] 
+    to: toPath,
+    globOptions: {
+      ignore: ['**/*.js', '**/*.ts']
     }
   };
- // console.error(pattern);
+  // console.error(pattern);
   copyPatterns.push(pattern);
 });
 module.exports = function (env, argv) {
@@ -42,8 +42,10 @@ module.exports = function (env, argv) {
     target: scriptConfig.target,
     mode: argv.production ? 'production' : 'development',
     devtool: argv.production ? 'source-maps' : 'none',
+    optimization:{
+      minimize:false
+    },
     plugins: [
-      new CleanWebpackPlugin(),
       new JavascriptObfuscator({
         compact: true,
         // // 压缩
@@ -74,11 +76,11 @@ module.exports = function (env, argv) {
         // // 启用全局变量和函数名你的混淆
         // renameGlobals: false,
         // // 禁用模糊处理和生成标识符
-        // reservedNames: [],
+        reservedNames: ['main'],
         // // 禁用数组内字符串的转换
         // reservedStrings: [],
         // // 通过固定和随机的位置移动数组，使解密的位置难以匹配，大文件应重点开启
-        // rotateStringArray: true,
+         rotateStringArray: true,
         // seed: 0,
         // // 使混淆后的代码无法使用格式美化，需要保证compact为true
         // selfDefending: false,
@@ -94,11 +96,11 @@ module.exports = function (env, argv) {
         // // 编码率
         // stringArrayThreshold: 0.75,
         // // 生成的代码环境，可选Browser、Browser No Eval、Node
-        // target: 'browser',
+        // target: 'node',
         // // 混淆对象键名
         // transformObjectKeys: false,
         // // 转义为Unicode，会大大增加体积，还原也比较容易，建议只对小文件使用
-        unicodeEscapeSequence: false,
+       // unicodeEscapeSequence: false,
       }),
       new SetHeader({
         uiMode: scriptConfig.uiMode,
@@ -114,10 +116,10 @@ module.exports = function (env, argv) {
       }),
       new CopyPlugin({
         patterns: copyPatterns,
-      
+
       }),
       new WatchDeployPlugin({
-        type:scriptConfig.watch
+        type: scriptConfig.watch
       }),
     ],
     module: {
@@ -131,7 +133,7 @@ module.exports = function (env, argv) {
             },
             {
               loader: "webpack-autojs-loader",
-            },
+            }
           ],
         },
         {
@@ -145,4 +147,4 @@ module.exports = function (env, argv) {
     },
   };
 }
-// console.log(result)
+
