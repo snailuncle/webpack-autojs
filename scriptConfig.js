@@ -11,6 +11,11 @@ var projects = [ //项目数组，放的是每一个要编译的项目，
     name: "dy",
     main: "./main.js"
   },
+  {
+    id:3,
+    name: "qx",
+    main: "./main.js"
+  },
 ]
 
 var config = {

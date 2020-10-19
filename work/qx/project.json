@@ -1,0 +1,10 @@
+{
+    "name": "抖音截流",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.example.dydianzan",
+    "versionName": "2.7.0",
+    "versionCode": 27
+}
