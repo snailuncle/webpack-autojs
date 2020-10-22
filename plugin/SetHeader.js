@@ -1,6 +1,7 @@
 const randomstring = require("randomstring");
 const ConcatSource = require("webpack-sources").ConcatSource;
 
+
 let 获取100位随机数字 = function () {
   let result = randomstring.generate({
     length: 100,
@@ -26,23 +27,20 @@ function base64编码(content) {
   return result;
 }
 
-
-
 class SetHeader {
   constructor(options) {
-    this.options =options||{};
+    this.options = options || {};
   }
 
   apply(compiler) {
-    // compiler.hooks.shouldEmit.tap('MyPlugin', params => {
-    // compiler.hooks.compile.tap("emit", function(compilation, callback) {
     compiler.hooks.emit.tapAsync("SetHeader", (compilation, callback) => {
       compilation.chunks.forEach((chunk) => {
         chunk.files.forEach((file) => {
           let result = "";
-          var header =this.options.header;
-          if (this.options.uiMode) {
-            console.log('uiMode = true, 需要添加"ui";');
+          var header = this.options.header;
+          console.error('源文件是"ui";开头？',chunk.entryModule['_source']['_value'].startsWith('"ui";'));
+          if (chunk.entryModule['_source']['_value'].startsWith('"ui";')) {
+            console.error('编译后的文件头部增加"ui";');
             result = '"ui";' + "\n" + header + "\n" + compilation.assets[file]["_value"];
           } else {
             result = header + "\n" + compilation.assets[file]["_value"];

@@ -24,7 +24,6 @@ var config = {
   base64: false,
   projectPrefix:"", //项目编译后，项目目录的前缀，如配置为b_ 则demo项目编译后名称为b_demo ，当希望项目的源码和编译和的代码都保存在手中，就有必要配置这个
   advancedEngines: true,
-  uiMode: true,  //项目是否有ui。这里有个bug，一旦设置，所以项目都采用这个模式编译。
   header: "header.txt",  //这个文件中放了你可以放一些声明、说明等注释内容
   base64RandomStrLength: 100,
   target: "node", // web || node
