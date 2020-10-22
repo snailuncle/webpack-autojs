@@ -508,6 +508,7 @@ function toComment() {
         if (numOfClick >= 10) {
             waitTime(3, "赞慢10个换下一个视频");
             log("满10个了")
+            
             break; //点够10个了
         }
     }
@@ -565,7 +566,7 @@ function fistClickZanPL() {
             log("进入评论，写评论");
             maid.click(666, 687);//进入评论
             className("android.widget.EditText").findOne().click();
-            waitTime(1, "进入评论，写评论");
+            waitTime(1, "进入评论,写评论");
             className("android.widget.EditText").findOne().setText(getHs());
             log("停留在这里,说明id发生了变化,手动点点击输入框试试");
             while (true) {
@@ -573,6 +574,7 @@ function fistClickZanPL() {
                 if (t != null) {
                     t.click();
                     break;
+
                 }
                 var m = className("android.widget.EditText").findOnce();
                 if (m != null) {
