@@ -2,8 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
-const SetHeader = require("./plugin/SetHeader");
-const WatchDeployPlugin = require("./plugin/WatchDeployPlugin");
+const SetHeader = require("autox-header-webpack-plugin");
+const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 var scriptConfig = require('./scriptConfig.js');
 
@@ -14,6 +14,10 @@ var dist = "./dist";
 var entry = {};
 var copyPatterns = [];
 scriptConfig.projects.forEach(project => {
+  if(!project.compile){
+    return false;
+  }
+  
   var projectName = project.name;
   var outProjectName = scriptConfig.projectPrefix + project.name;
   var outPathName = path.posix.resolve("/", outProjectName, project.main);
