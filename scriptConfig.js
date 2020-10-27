@@ -22,4 +22,5 @@ var config = {
   target: "node", // web || node
   projects: projects,
 };
+
 module.exports = config;
