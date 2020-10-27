@@ -8,7 +8,6 @@ var projects = [ //项目数组，放的是每一个要编译的项目，
     main: "./main.js" //主入文件，入口文件，按autojs目录，一般和project.json 同级
   },
   { id: 2, compile: true, name: "dy", main: "./main.js" },
-  { id: 3, compile: false, name: "qx", main: "./main.js" },
   { id: 3, compile: false, name: "demo", main: "./main.js" },
 ]
 
