@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
-const SetHeader = require("autox-header-webpack-plugin");
+const AutoxHeaderWebpackPlugin = require("autox-header-webpack-plugin");
 const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 var scriptConfig = require('./scriptConfig.js');
@@ -14,10 +14,9 @@ var dist = "./dist";
 var entry = {};
 var copyPatterns = [];
 scriptConfig.projects.forEach(project => {
-  if(!project.compile){
+  if (!project.compile) {
     return false;
   }
-  
   var projectName = project.name;
   var outProjectName = scriptConfig.projectPrefix + project.name;
   var outPathName = path.posix.resolve("/", outProjectName, project.main);
@@ -37,6 +36,7 @@ scriptConfig.projects.forEach(project => {
   copyPatterns.push(pattern);
 });
 module.exports = function (env, argv) {
+  var prod = argv.mode == 'production'
   return {
     entry: entry,
     output: {
@@ -44,14 +44,14 @@ module.exports = function (env, argv) {
       path: path.resolve(__dirname, dist),
     },
     target: scriptConfig.target,
-    mode: argv.production ? 'production' : 'development',
-    devtool: argv.production ? 'source-maps' : 'none',
-    optimization:{
-      minimize:false
+    mode: argv.mode,
+    devtool: prod ? 'none' : 'source-maps',
+    optimization: {
+      minimize: false
     },
     plugins: [
       new JavascriptObfuscator({
-        compact: true,
+        compact: prod,
         // // 压缩
         // compact: true,
         // // 控制流扁平化（降低50%速度）
@@ -84,10 +84,10 @@ module.exports = function (env, argv) {
         // // 禁用数组内字符串的转换
         // reservedStrings: [],
         // // 通过固定和随机的位置移动数组，使解密的位置难以匹配，大文件应重点开启
-         rotateStringArray: true,
-        // seed: 0,
+        rotateStringArray: prod,
+        seed: 0,
         // // 使混淆后的代码无法使用格式美化，需要保证compact为true
-        // selfDefending: false,
+        // selfDefending: prod,
         // // 生成指引文件
         // sourceMap: false,
         // sourceMapBaseUrl: '',
@@ -98,16 +98,15 @@ module.exports = function (env, argv) {
         // // 编码字符串
         // stringArrayEncoding: true,
         // // 编码率
-        // stringArrayThreshold: 0.75,
+        stringArrayThreshold: 0.75,
         // // 生成的代码环境，可选Browser、Browser No Eval、Node
-        // target: 'node',
+        target: 'node',
         // // 混淆对象键名
         // transformObjectKeys: false,
         // // 转义为Unicode，会大大增加体积，还原也比较容易，建议只对小文件使用
-       // unicodeEscapeSequence: false,
+        // unicodeEscapeSequence: false,
       }),
-      new SetHeader({
-        uiMode: scriptConfig.uiMode,
+      new AutoxHeaderWebpackPlugin({
         base64: scriptConfig.base64,
         advancedEngines: scriptConfig.advancedEngines,
         header: headerText

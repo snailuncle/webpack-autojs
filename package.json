@@ -17,7 +17,6 @@
     "@babel/runtime": "^7.7.4",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
-    "autox-deploy-webpack-plugin": "^1.0.3",
     "autox-header-webpack-plugin": "^1.0.3",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-remove-strict-mode": "0.0.2",
@@ -27,14 +26,15 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "javascript-obfuscator": "^2.6.1",
-    "randomstring": "^1.1.5",
     "ts-loader": "^6.2.1",
     "typescript": "^3.6.4",
     "url-loader": "^1.1.2",
     "webpack": "^4.41.4",
-    "webpack-autojs-loader": "^1.1.2",
     "webpack-cli": "^3.3.12",
-    "webpack-obfuscator": "^2.6.0"
+    "webpack-obfuscator": "^2.6.0",
+    "autox-deploy-webpack-plugin": "^1.0.3",
+    "randomstring": "^1.1.5",
+    "webpack-autojs-loader": "^1.1.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",

@@ -4,7 +4,7 @@ ui.layout(
         <TextView text="抖音点赞" gravity="center" textSize="24sp" />
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <horizontal>
-            <checkbox w="auto" id="pldz" text="评论点赞" checked="true" />
+            <checkbox w="auto" id="pldz" text="评论点赞" checked="true"/>
             <input w="auto" id="numpldz" minWidth="50" inputType="number" text="7" />
             <TextView w="auto" text="（总数）" />
         </horizontal>
@@ -16,6 +16,11 @@ ui.layout(
         <horizontal>
             <checkbox w="auto" id="plrzppl" text="评论人作品评论" checked="true" />
             <input w="auto" id="numplrzppl" minWidth="50" inputType="number" text="5" />
+            <TextView w="auto" text="（总数）" />
+        </horizontal>
+        <horizontal>
+            <checkbox w="auto" id="fsgz" text="关注粉丝总数" checked="true" />
+            <input w="auto" id="numfsgz" minWidth="50" inputType="number" text="5" />
             <TextView w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
@@ -52,13 +57,13 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 13.0);
+    toast("开始干活：版本" + 13.2);
     getConfig();
     main();
 
 });
 ui.ok1.click(function () {
-    var appName = "抖音短视频";
+    var appName = "抖音";
     toast("完全打开后，进入主页，按返回，再【开始干活】");
     common.openApp(appName);
 })
@@ -72,6 +77,7 @@ var tasks;
 var pldzTotal = -1;
 var plrzpdzTotal = -1;
 var plrzpplTotal = -1;
+var fsgzTotal=-1;
 var sleepTime = -1;
 var config_videos = 15;
 var config_pagehua = 5;
@@ -88,13 +94,19 @@ function getConfig() {
     if (ui.plrzppl.isChecked()) {
         tasks.push(3);
     }
-    if (ui.sleepTime.isChecked()) {
+    if (ui.fsgz.isChecked()) {
         tasks.push(4);
+    }
+    if (ui.sleepTime.isChecked()) {
+        tasks.push(5);
         isCirculate = true;
     }
+
+
     pldzTotal = Number(ui.numpldz.text());
     plrzpdzTotal = Number(ui.numplrzpdz.text());
     plrzpplTotal = Number(ui.numplrzppl.text());
+    fsgzTotal = Number(ui.numfsgz.text());
     sleepTime = Number(ui.numsleepTime.text()) * 60;
     log("执行任务--->" + tasks.join(","));
     log("点赞" + pldzTotal);
@@ -111,11 +123,10 @@ function readhs() {
     log(bqhss);
     log(wbhss);
 }
-
 var maid = new Maid("com.ss.android.ugc.aweme");
 var key = -1, currentVideo = 0, desVideo = -1, currentTask = -1; totalTask = -1; //当前第几个视频
 var doneMap = new Map();
-var OPENAPP = 0, MY = 1, FIRST = 3, CHOISE = 4, COMMENT = 5, FIRSTCLICKZANPL = 6, CHANGETASK = 7;
+var OPENAPP = 0, MY = 1, FIRST = 3, CHOISE = 4, COMMENT = 5, FIRSTCLICKZANPL = 6, CHANGETASK = 7,FSGZ=8;
 var thread;
 var myFloaty;
 function main() {
@@ -148,6 +159,9 @@ function main() {
                     break;
                 case FIRSTCLICKZANPL:
                     fistClickZanPL();
+                    break;
+                case FSGZ:
+                        fsgz();
                     break;
                 case CHANGETASK:
                     changeTask();
@@ -196,10 +210,9 @@ function cleanCache() {
     waitTime(5);
     maid.clickTextCenter("清空");
     currentVideo = 0;
-
 }
-
 function openOrCloseFly() {
+    return ;
     common.resetConsole(0, 700);
     common.swipeRandom(300, 0, 400, 1000, 200);
     waitTime(3);
@@ -233,7 +246,7 @@ function exitApp() {
 
 
 function open() {
-    var appName = "抖音短视频";
+    var appName = "抖音";
     common.openApp(appName);
     common.waitTime(3, "进入抖音首页");
     key = MY;
@@ -305,8 +318,10 @@ function choise() { //选择第几个视频
         }
     }
     maid.click(device.width / 2, device.height / 2);
-    waitTime(3, "点击评论")
-    maid.click(668, 678); //点击评论，进入评论页
+    if(  feature<4) {
+        maid.click(668, 678); //点击评论，进入评论页
+        waitTime(3, "点击评论")
+    }
     waitTime(3, "页面跳转冷却")
     if (feature == 1) {
         key = COMMENT;
@@ -319,7 +334,14 @@ function choise() { //选择第几个视频
         //给第一个作品点赞，先滑动5页
         nextPage(config_pagehua);
     }
+    if(feature==4){
+    waitTime(3,"粉丝点赞")
+        key=FSGZ;
+    }
+    //功能5 不用做任何操作
 }
+
+
 function getHs() {
     var min = 0;
     var rs = wbhss[commonTools.random(min, wbhss.length - 1)];
@@ -351,7 +373,7 @@ function logTask() {
 
 
 var featureindex = -1;
-var featureNames = ["", "评论点赞", "评论人作品点赞", "评论人作品评论", "休息"];
+var featureNames = ["", "评论点赞", "评论人作品点赞", "评论人作品评论","粉丝点赞", "休息"];
 function changeTask() {
     pauseTask();
     if (feature == 1 && currentTask != 0 && totalTask > currentTask) {
@@ -393,6 +415,12 @@ function changeTask() {
             desVideo = commonTools.random(0, 14);
             break;
         case 4:
+            desVideo=desVideo==-1?0:desVideo;
+            key = CHOISE;
+            currentTask = 0;
+            totalTask =fsgzTotal;
+            break;
+        case 5:
             feature4();
             break;
         default:
@@ -484,11 +512,11 @@ function toComment() {
             break; //点够10个了
         }
     }
-    var wgs = id("d8c").find();
+    var wgs = id("dbs").find();
     var uc = new Array();
     wgs.forEach(element => {
         //点赞数不存在的
-        if (element.findOne(id("hht")) == null) {
+        if (element.findOne(id("hph")) == null) {
             uc.push(element);
         }
     });
@@ -508,7 +536,7 @@ function toComment() {
         if (numOfClick >= 10) {
             waitTime(3, "赞慢10个换下一个视频");
             log("满10个了")
-            
+
             break; //点够10个了
         }
     }
@@ -527,14 +555,64 @@ function toComment() {
     //前面条件都没满足，换下一页
     nextPage();
 }
+function fsgz(){
+    waitTime(1,"粉丝关注")
+    click(658,370);
+    waitTime(6,"点击作者")
+    if(!text("粉丝").exists()){
+        desVideo++;
+        key=CHOISE;
+        waitTime(3,"没有进入粉丝")
+        back();
+        return;
+    }
+    click("粉丝");
+    waitTime(3,"等待反应")
+    if(!id("android:id/text1").exists()){
+        desVideo++;
+        key=CHOISE;  
+        waitTime(3,"没有进入粉丝列表")
+        back();
+        return;
+    }
+    waitTime(1,"开始关注");
+    gz();
+   // key=CHANGETASK;
+}
+function gz(){
+    waitTime(1,"找出所有名字,申请截屏权限");
+    images.requestScreenCapture(false);
+    var nameWg= id("id6").find();
+    for (let index = 0; index < nameWg.length; index++) {
+        const element = nameWg[index];
+        element.parent().parent().parent().click();
+        waitTime(6,"进入用户详情")
+        intoUser();
+    }
+    waitTime(1,"用户完成")
+}
+function intoUser(){
+    waitTime(1,"进入用户详情");
+    var p =  images.captureScreen();
+    waitTime(1,'等待');
+    var bound= id("gs3").findOne().bounds;
+    var point = findColor(p, "#18DCF3", {
+        region: bound,
+        threshold: 4
+    });
+    waitTime(6,"颜色"+point);
+
+}
+
+
 function fistClickZanPL() {
     pauseTask();
     waitTime(2, "进入评论列表");
     log("进入评论列表，没有进入，可以手动点评论")
     textEndsWith("条评论").findOne();
     log("定在这则需要升级可能抖音版本不对");
-    id("d8c").findOne();
-    var comments = id("d8c").find();
+    id("dbs").findOne();
+    var comments = id("dbs").find();
     for (let index = 1; index < comments.length - 1; index++) {
         logTask();
         var name = findName(comments[index])
@@ -570,7 +648,7 @@ function fistClickZanPL() {
             className("android.widget.EditText").findOne().setText(getHs());
             log("停留在这里,说明id发生了变化,手动点点击输入框试试");
             while (true) {
-                var t = id("aj7").findOne(1000);
+                var t = id("ak7").findOne(1000);
                 if (t != null) {
                     t.click();
                     break;
@@ -730,10 +808,10 @@ function setTxt(txt) {
 DyDinaZan = {}; //评论滚动控件id：com.ss.android.ugc.aweme:id/f59
 
 DyDinaZan.openApp = function () {
-    var appName = "抖音短视频";
+    var appName = "抖音";
     log("正在打开抖音app");
     launchApp(appName);
-    waitTime(10,"正在打开"+appName);
+    waitTime(10, "正在打开" + appName);
 }
 
 DyDinaZan.openComment = function () {
@@ -747,7 +825,7 @@ DyDinaZan.openComment = function () {
     }
     var infoNumber = info.match(/-?([1-9]\d*(\.\d*)*|0\.[1-9]\d*)/g);
     log(infoNumber);
-    if (parseInt(infoNumber)>200) {
+    if (parseInt(infoNumber) > 200) {
         needdo = true;
     }
     if (needdo) {
@@ -759,19 +837,19 @@ DyDinaZan.openComment = function () {
     return needdo;
 }
 DyDinaZan.analysisComment = function () {
-    waitTime(1,"分析刚刚的的数量")
+    waitTime(1, "分析刚刚的的数量")
     var validCommentCount = 0;
     var pageNum = 0;
     for (var i = 0; i < 8; i++) {
         //处理当前页
         pageNum++;
-       var gg= text("刚刚").find();
-        validCommentCount+=gg.length;
-        if(validCommentCount>=2){
-            waitTime(1,"功能找到"+validCommentCount+"個,返回点赞了")
+        var gg = text("刚刚").find();
+        validCommentCount += gg.length;
+        if (validCommentCount >= 2) {
+            waitTime(1, "功能找到" + validCommentCount + "個,返回点赞了")
             return true;
         }
-        if (text("暂时没有更多了").findOnce()!=null) {
+        if (text("暂时没有更多了").findOnce() != null) {
             log("暂时没有更多了");
             break;
         }
@@ -784,8 +862,8 @@ DyDinaZan.analysisComment = function () {
 //点赞
 DyDinaZan.giveTheThumbsUp = function () {
     var comment = className("android.widget.LinearLayout").descStartsWith("未选中，喜欢").findOnce();
-    if(comment!=null){
-        waitTime(1,"点赞");
+    if (comment != null) {
+        waitTime(1, "点赞");
         comment.click();
     }
     waitTime(1);
@@ -807,7 +885,7 @@ function main2() {
             continue;
         }
         var canGiveTheThumbsUp = DyDinaZan.analysisComment();
-        waitTime(1,"返回---");
+        waitTime(1, "返回---");
         back();
         if (canGiveTheThumbsUp) {
             log("满足点赞条件---");
