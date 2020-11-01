@@ -1,4 +1,5 @@
 /**
 欢迎使用autox.js插件,由kkevsekk开发，qq: 470722660 ，email: kkevsekk@163.com
 本软件可以免费使用，但是不允许二次开发、以及销售，如需获得最的更多apk 请联系作者。
+开源库地址：https://github.com/kkevsekk1/webpack-autojs
 **/
