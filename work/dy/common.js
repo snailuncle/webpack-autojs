@@ -18,13 +18,15 @@ common.resetConsole = function (x, y, w, h) {
 common.waitTime = function (seconds, txt) {
     var i = seconds;
     var msg = txt || "倒计时";
-    while (i > 0) {
-        if (seconds == 1) {
+    while (i >= 0) {
+        if (seconds == 0) {
             log(msg);
         } else {
             log(msg + "--" + i);
         }
-        sleep(500);
+        if(i!=0){
+            sleep(500);
+        }
         i--;
     }
 }

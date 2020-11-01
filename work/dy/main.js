@@ -4,17 +4,17 @@ ui.layout(
         <TextView text="抖音点赞" gravity="center" textSize="24sp" />
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <horizontal>
-            <checkbox w="auto" id="pldz" text="评论点赞" checked="true"/>
+            <checkbox w="auto" id="pldz" text="评论点赞" checked="" />
             <input w="auto" id="numpldz" minWidth="50" inputType="number" text="7" />
             <TextView w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
-            <checkbox w="auto" id="plrzpdz" text="评论人作品点赞" checked="true" />
+            <checkbox w="auto" id="plrzpdz" text="评论人作品点赞" checked="false" />
             <input w="auto" id="numplrzpdz" minWidth="50" inputType="number" text="5" />
             <TextView w="auto" text="（总数）" />
         </horizontal>
         <horizontal>
-            <checkbox w="auto" id="plrzppl" text="评论人作品评论" checked="true" />
+            <checkbox w="auto" id="plrzppl" text="评论人作品评论" checked="false" />
             <input w="auto" id="numplrzppl" minWidth="50" inputType="number" text="5" />
             <TextView w="auto" text="（总数）" />
         </horizontal>
@@ -60,11 +60,13 @@ ui.ok.click(function () {
     toast("开始干活：版本" + 13.2);
     getConfig();
     main();
-
 });
 ui.ok1.click(function () {
     var appName = "抖音";
     toast("完全打开后，进入主页，按返回，再【开始干活】");
+    threads.start(function(){
+      
+    })
     common.openApp(appName);
 })
 ui.ok3.click(function () {
@@ -77,7 +79,7 @@ var tasks;
 var pldzTotal = -1;
 var plrzpdzTotal = -1;
 var plrzpplTotal = -1;
-var fsgzTotal=-1;
+var fsgzTotal = -1;
 var sleepTime = -1;
 var config_videos = 15;
 var config_pagehua = 5;
@@ -126,7 +128,7 @@ function readhs() {
 var maid = new Maid("com.ss.android.ugc.aweme");
 var key = -1, currentVideo = 0, desVideo = -1, currentTask = -1; totalTask = -1; //当前第几个视频
 var doneMap = new Map();
-var OPENAPP = 0, MY = 1, FIRST = 3, CHOISE = 4, COMMENT = 5, FIRSTCLICKZANPL = 6, CHANGETASK = 7,FSGZ=8;
+var OPENAPP = 0, MY = 1, FIRST = 3, CHOISE = 4, COMMENT = 5, FIRSTCLICKZANPL = 6, CHANGETASK = 7, FSGZ = 8;
 var thread;
 var myFloaty;
 function main() {
@@ -135,6 +137,7 @@ function main() {
         thread.interrupt()
     }
     thread = threads.start(function () {
+        requestScreenCapture(false);
         common.resetConsole();
         myFloaty = floatyWindow();
         readhs();
@@ -161,7 +164,7 @@ function main() {
                     fistClickZanPL();
                     break;
                 case FSGZ:
-                        fsgz();
+                    fsgz();
                     break;
                 case CHANGETASK:
                     changeTask();
@@ -212,7 +215,7 @@ function cleanCache() {
     currentVideo = 0;
 }
 function openOrCloseFly() {
-    return ;
+    // return;
     common.resetConsole(0, 700);
     common.swipeRandom(300, 0, 400, 1000, 200);
     waitTime(3);
@@ -318,7 +321,7 @@ function choise() { //选择第几个视频
         }
     }
     maid.click(device.width / 2, device.height / 2);
-    if(  feature<4) {
+    if (feature < 4) {
         maid.click(668, 678); //点击评论，进入评论页
         waitTime(3, "点击评论")
     }
@@ -334,9 +337,9 @@ function choise() { //选择第几个视频
         //给第一个作品点赞，先滑动5页
         nextPage(config_pagehua);
     }
-    if(feature==4){
-    waitTime(3,"粉丝点赞")
-        key=FSGZ;
+    if (feature == 4) {
+        waitTime(3, "粉丝关注")
+        key = FSGZ;
     }
     //功能5 不用做任何操作
 }
@@ -373,7 +376,7 @@ function logTask() {
 
 
 var featureindex = -1;
-var featureNames = ["", "评论点赞", "评论人作品点赞", "评论人作品评论","粉丝点赞", "休息"];
+var featureNames = ["", "评论点赞", "评论人作品点赞", "评论人作品评论", "粉丝点赞", "休息"];
 function changeTask() {
     pauseTask();
     if (feature == 1 && currentTask != 0 && totalTask > currentTask) {
@@ -415,10 +418,10 @@ function changeTask() {
             desVideo = commonTools.random(0, 14);
             break;
         case 4:
-            desVideo=desVideo==-1?0:desVideo;
+            desVideo = desVideo == -1 ? 0 : desVideo;
             key = CHOISE;
             currentTask = 0;
-            totalTask =fsgzTotal;
+            totalTask = fsgzTotal;
             break;
         case 5:
             feature4();
@@ -450,7 +453,6 @@ function feature4() {
     waitTime(20);
     key = MY;
 }
-
 //第一个作品，后，如果没有第一个作品，返回到评论页，
 function clickFirst() {
     waitTime(4, "用户作品,没有进入可以手动")
@@ -555,56 +557,105 @@ function toComment() {
     //前面条件都没满足，换下一页
     nextPage();
 }
-function fsgz(){
-    waitTime(1,"粉丝关注")
-    click(658,370);
-    waitTime(6,"点击作者")
-    if(!text("粉丝").exists()){
+function fsgz() {
+    waitTime(1, "粉丝关注请求权限")
+ 
+    waitTime(1, "粉丝关注")
+    click(658, 370);
+    waitTime(6, "点击作者")
+    if (!text("粉丝").exists()) {
         desVideo++;
-        key=CHOISE;
-        waitTime(3,"没有进入粉丝")
+        key = CHOISE;
+        waitTime(3, "没有进入粉丝")
         back();
         return;
     }
     click("粉丝");
-    waitTime(3,"等待反应")
-    if(!id("android:id/text1").exists()){
+    waitTime(3, "等待反应")
+    if (!textStartsWith("粉丝").id("android:id/text1").exists()) {
         desVideo++;
-        key=CHOISE;  
-        waitTime(3,"没有进入粉丝列表")
+        key = CHOISE;
+        waitTime(3, "没有进入粉丝列表")
         back();
         return;
     }
-    waitTime(1,"开始关注");
-    gz();
-   // key=CHANGETASK;
-}
-function gz(){
-    waitTime(1,"找出所有名字,申请截屏权限");
-    images.requestScreenCapture(false);
-    var nameWg= id("id6").find();
-    for (let index = 0; index < nameWg.length; index++) {
-        const element = nameWg[index];
-        element.parent().parent().parent().click();
-        waitTime(6,"进入用户详情")
-        intoUser();
+    waitTime(1, "开始关注");
+    while(true){
+        gz();
+        if(currentTask>totalTask){
+            key=CHANGETASK;
+            back();
+            waitTime(10,"退回视频列表")
+            back();
+            waitTime(10,"换任务");
+            break;
+        }
+        if(text("暂时没有更多了").findOnce()!=null||text("推荐关注").id("id3").findOnce()!=null){
+            waitTime(1,"没有更多了");
+            back();
+            desVideo++;
+            key=CHOISE;
+            waitTime(10,"换一个视频");
+            back();
+            break;
+        }
     }
-    waitTime(1,"用户完成")
 }
-function intoUser(){
-    waitTime(1,"进入用户详情");
-    var p =  images.captureScreen();
-    waitTime(1,'等待');
-    var bound= id("gs3").findOne().bounds;
+var doNames  = new Map();
+function gz() {
+    waitTime(3, "等待---");
+    var nameWg = id("id6").find();
+    console.log(nameWg.length);
+    var names = [];
+    nameWg.forEach(nw => {
+        names.push(nw.text());
+    })
+    for (var index = 0; index < nameWg.length; index++) {
+        const element = text(names[index]).findOnce();
+        if(element==null){
+            continue;
+        }
+        if(doNames.has(names[index])){
+            continue;
+        }
+        element.parent().parent().parent().click();
+        doNames.put(names[index],1);
+        waitTime(3, "进入用户详情")
+        if (!isNan()) {
+            log("不是男");
+            back();
+            continue;
+        }
+        click("#  关注");
+        currentTask++;
+        waitTime(1, "完成")
+        back();
+        waitTime(2,"")
+    }
+    nextPage();
+    waitTime(0, "下一页用户")
+    return true;
+}
+function isNan() {
+    waitTime(1, "进入用户详情");
+    var p = images.captureScreen();
+    waitTime(1, '找男的。。。');
+    var sexwg = id("gs3").findOnce();
+    if(sexwg==null){
+        back();
+        return false;
+    }
+    var bound= sexwg.bounds();
     var point = findColor(p, "#18DCF3", {
-        region: bound,
-        threshold: 4
+        region: [bound.left, bound.top, 100, 50],
+        threshold: 8
     });
-    waitTime(6,"颜色"+point);
-
+    log(point, "坐标")
+    if (point != null) {
+        return true;
+    }
+    return false;
 }
-
-
 function fistClickZanPL() {
     pauseTask();
     waitTime(2, "进入评论列表");
@@ -652,7 +703,6 @@ function fistClickZanPL() {
                 if (t != null) {
                     t.click();
                     break;
-
                 }
                 var m = className("android.widget.EditText").findOnce();
                 if (m != null) {
@@ -845,7 +895,7 @@ DyDinaZan.analysisComment = function () {
         pageNum++;
         var gg = text("刚刚").find();
         validCommentCount += gg.length;
-        if (validCommentCount >= 2) {
+        if (validCommentCount >= 3) {
             waitTime(1, "功能找到" + validCommentCount + "個,返回点赞了")
             return true;
         }
