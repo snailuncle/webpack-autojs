@@ -40,7 +40,6 @@ var common = require("./common.js");
 var Map = require("./Map.js");
 var commonTools = require("./common.js");
 const { waitTime } = require("./common.js");
-
 ui.autoService.on("check", function (checked) {
     // 用户勾选无障碍服务的选项时，跳转到页面让用户去开启
     if (checked && auto.service == null) {
@@ -61,12 +60,10 @@ ui.ok.click(function () {
     getConfig();
     main();
 });
+
 ui.ok1.click(function () {
     var appName = "抖音";
     toast("完全打开后，进入主页，按返回，再【开始干活】");
-    threads.start(function(){
-      
-    })
     common.openApp(appName);
 })
 ui.ok3.click(function () {
