@@ -21,8 +21,6 @@ ui.layout(
         </horizontal>
     </vertical>
 );
-
-
 var Maid = require("../../common/Maid.js");
 var maid = new Maid("cn.wps.moffice_eng");
 var filePath = "/sdcard/Download/";
@@ -34,7 +32,6 @@ ui.hs.click(function () {
 });
 ui.openapp.click(function () {
     var appName = ui.app.text();
-
     threads.start(function () {
         launchApp(appName);
         floatyWindow();
@@ -42,11 +39,13 @@ ui.openapp.click(function () {
 });
 function hszs() {
     threads.start(function () {
+        totalhs = Number(ui.totalhs.text());
         maid.before(true);
         maid.launch();
         for (var index = 0; index <= totalhs; index++) {
             maid.checkFile(filePath + "hs" + index + ".txt");
         }
+
     })
 }
 function floatyWindow() {
@@ -58,19 +57,14 @@ function floatyWindow() {
             </grid>
         </vertical>
     );
-    window.setPosition(device.width * 0.1, device.height / 2);
+    window.setPosition(device.width * 0.1, device.height * 0.5);
     window.exitOnClose();
-    var arr = [];
-    arr.push({ key: 1 });
-    arr.push({ key: 2 });
-    arr.push({ key: 3 });
-    arr.push({ key: 4 });
-    arr.push({ key: 5 });
-    arr.push({ key: 6 });
-    arr.push({ key: 7 });
-    arr.push({ key: 8 });
+    var arr=[];
+    for (var index = 0; index <= totalhs; index++) {
+          arr.push({ key: index });
+    }
     arr.push({ key: 'del' });
-    window.actions.setDataSource(arr);
+    window.actions.setDataSource(arr);    
     window.tu.click(() => {
         window.setAdjustEnabled(!window.isAdjustEnabled());
         return true;

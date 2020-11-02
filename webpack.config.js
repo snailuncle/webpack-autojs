@@ -45,7 +45,7 @@ module.exports = function (env, argv) {
     },
     target: scriptConfig.target,
     mode: argv.mode,
-    devtool: prod ? 'none' : 'source-maps',
+    devtool: prod ? 'none' : 'none',
     optimization: {
       minimize: false
     },
@@ -111,6 +111,9 @@ module.exports = function (env, argv) {
         advancedEngines: scriptConfig.advancedEngines,
         header: headerText
       }),
+      new WatchDeployPlugin({
+        type: scriptConfig.watch
+      }),
       new CleanWebpackPlugin({
         cleanStaleWebpackAssets: false,
         protectWebpackAssets: false,
@@ -120,9 +123,6 @@ module.exports = function (env, argv) {
       new CopyPlugin({
         patterns: copyPatterns,
 
-      }),
-      new WatchDeployPlugin({
-        type: scriptConfig.watch
       }),
     ],
     module: {
