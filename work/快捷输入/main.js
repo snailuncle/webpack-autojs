@@ -29,6 +29,7 @@ ui.hs.click(function () {
     toast("打开wps,表情编辑话术");
     totalhs = Number(ui.totalhs.text());
     hszs();
+    
 });
 ui.openapp.click(function () {
     var appName = ui.app.text();
@@ -64,7 +65,8 @@ function floatyWindow() {
           arr.push({ key: index });
     }
     arr.push({ key: 'del' });
-    window.actions.setDataSource(arr);    
+    window.actions.setDataSource(arr); 
+
     window.tu.click(() => {
         window.setAdjustEnabled(!window.isAdjustEnabled());
         return true;
