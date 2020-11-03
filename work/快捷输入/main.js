@@ -4,7 +4,9 @@ ui.layout(
     <vertical padding="16" id="parent">
         <TextView text="快捷输入" gravity="center" textSize="24sp" padding="10 10 10 10" />
         <horizontal>
-            <TextView w="auto" text="表情话术【hs0.txt】+文本话术【hs1—hsN】,保存在download目录下的文件hs1-n.txt，每一行为一条话术" />
+            <TextView w="auto" text="表情话术【hs0.txt】+表情话术【hs1.txt】+文本话术【hs2—hsN】,保存在download目录下的文件hs0-n.txt，每一行为一条话术,
+            0,1号话术库，会随机添加在 2-N号话术库的前后
+            " />
         </horizontal>
         <horizontal>
             <TextView w="auto" text="话术库" />
@@ -27,14 +29,14 @@ var common = require("../../common/common.js");
 var maid = new Maid("cn.wps.moffice_eng");
 var filePath = "/sdcard/Download/";
 var storage = storages.create("com.example.kjsr");
-var totalhs =  storage.get("totalhs",3);
-var appName =  storage.get("appName","抖音");
-ui.totalhs.setText(totalhs+"");
+var totalhs = storage.get("totalhs", 3);
+var appName = storage.get("appName", "抖音");
+ui.totalhs.setText(totalhs + "");
 ui.app.setText(appName);
 ui.hs.click(function () {
     toast("打开wps,表情编辑话术");
     totalhs = Number(ui.totalhs.text());
-    storage.put("totalhs",totalhs);
+    storage.put("totalhs", totalhs);
     hszs();
 });
 ui.openapp.click(function () {
@@ -42,7 +44,7 @@ ui.openapp.click(function () {
     threads.start(function () {
         readhss();
         launchApp(appName);
-        storage.put("appName",appName);
+        storage.put("appName", appName);
         floatyWindow();
     });
 });
@@ -123,9 +125,10 @@ function initKeys(type) {
     var arr = [];
     if (type) {
         arr.push({ key: "表情" });
+        arr.push({ key: "1" });
         log("自由组合模式");
     }
-    for (var index = 1; index <= totalhs; index++) {
+    for (var index = 2; index <= totalhs; index++) {
         arr.push({ key: index });
     }
     arr.push({ key: 'del' });
@@ -134,7 +137,7 @@ function initKeys(type) {
 function geths(type, index) {
     log(hss)
     if (type) {
-        if (index =="表情") {
+        if (index == "表情") {
             index = 0;
         }
         log(hss[parseInt(index)]);
@@ -151,25 +154,18 @@ function randomHs(hs) {
     }
     return rs;
 }
-function zuhehs(index) { //组合话术
-    var bqhss = hss[0];
-    var wbhss = hss[index];
-    var index3 = random(0, 99);
-    var result = randomHs(wbhss);
-    switch (index3 % 3) {
-        case 0:
-            result;
-            break;
-        case 1:
-            result = randomHs(bqhss) + result;
-            break;
-        case 2:
-            result = randomHs(bqhss) + result + randomHs(bqhss);
-            break
-        default:
-            break;
+function getRandomhs(bqhss) {
+    var index3 = random(0, 1);
+    if (index3 == 0) {
+        return "";
     }
-    return result;
+    return randomHs(bqhss);
+}
+
+function zuhehs(index) { //组合话术
+    var result = randomHs(hss[index]);
+    return getRandomhs(hss[random(0, 1)]) +getRandomhs(hss[random(0, 1)]) + result +getRandomhs(hss[random(0, 1)]) +getRandomhs(hss[random(0, 1)]);
+
 }
 var hss = [];
 function readhss() { //读取话术
