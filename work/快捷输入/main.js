@@ -86,12 +86,16 @@ function floatyWindow() {
                         if (type && edwg.text() != "发送消息...") {
                             txt = edwg.text() + txt;
                         }
-                        edwg.setText(txt);
+                        ui.run(() => {
+                            edwg.setText(txt);
+                        })
                     }
                 } else {
                     var edwg = className("android.widget.EditText").findOnce()
                     if (edwg != null) {
-                        edwg.setText(" ");
+                        ui.run(() => {
+                            edwg.setText(" ");
+                        })
                     }
                 }
             });
@@ -164,7 +168,7 @@ function getRandomhs(bqhss) {
 
 function zuhehs(index) { //组合话术
     var result = randomHs(hss[index]);
-    return getRandomhs(hss[random(0, 1)]) +getRandomhs(hss[random(0, 1)]) + result +getRandomhs(hss[random(0, 1)]) +getRandomhs(hss[random(0, 1)]);
+    return getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + result + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
 
 }
 var hss = [];

@@ -56,7 +56,7 @@ ui.hssz.click(function () {
     var e = engines.execScriptFile("hssz.js");
 });
 ui.ok.click(function () {
-    toast("开始干活：版本" + 13.2);
+    toast("开始干活：版本" + 13.4);
     getConfig();
     main();
 });
@@ -511,11 +511,11 @@ function toComment() {
             break; //点够10个了
         }
     }
-    var wgs = id("dbs").find();
+    var wgs = id("dex").find();
     var uc = new Array();
     wgs.forEach(element => {
         //点赞数不存在的
-        if (element.findOne(id("hph")) == null) {
+        if (element.findOne(id("hy3")) == null) {
             uc.push(element);
         }
     });
@@ -587,7 +587,7 @@ function fsgz() {
             waitTime(10,"换任务");
             break;
         }
-        if(text("暂时没有更多了").findOnce()!=null||text("推荐关注").id("id3").findOnce()!=null){
+        if(text("暂时没有更多了").findOnce()!=null||text("推荐关注").id("im3").findOnce()!=null){
             waitTime(1,"没有更多了");
             back();
             desVideo++;
@@ -601,7 +601,7 @@ function fsgz() {
 var doNames  = new Map();
 function gz() {
     waitTime(3, "等待---");
-    var nameWg = id("id6").find();
+    var nameWg = id("im6").find();
     console.log(nameWg.length);
     var names = [];
     nameWg.forEach(nw => {
@@ -637,7 +637,7 @@ function isNan() {
     waitTime(1, "进入用户详情");
     var p = images.captureScreen();
     waitTime(1, '找男的。。。');
-    var sexwg = id("gs3").findOnce();
+    var sexwg = id("gyw").findOnce();
     if(sexwg==null){
         back();
         return false;
@@ -659,8 +659,8 @@ function fistClickZanPL() {
     log("进入评论列表，没有进入，可以手动点评论")
     textEndsWith("条评论").findOne();
     log("定在这则需要升级可能抖音版本不对");
-    id("dbs").findOne();
-    var comments = id("dbs").find();
+    id("dex").findOne();
+    var comments = id("dex").find();
     for (let index = 1; index < comments.length - 1; index++) {
         logTask();
         var name = findName(comments[index])
@@ -696,7 +696,7 @@ function fistClickZanPL() {
             className("android.widget.EditText").findOne().setText(getHs());
             log("停留在这里,说明id发生了变化,手动点点击输入框试试");
             while (true) {
-                var t = id("ak7").findOne(1000);
+                var t = id("aky").findOne(1000);
                 if (t != null) {
                     t.click();
                     break;
