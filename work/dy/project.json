@@ -4,6 +4,9 @@
     "ignore": [
         "build"
     ],
+    "launchConfig": {
+        "hideLogs": true
+    },
     "packageName": "com.example.dydianzan",
     "versionName": "2.9.0",
     "versionCode": 29
