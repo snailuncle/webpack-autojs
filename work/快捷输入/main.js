@@ -144,8 +144,14 @@ function geths(type, index) {
         if (index == "表情") {
             index = 0;
         }
-        log(hss[parseInt(index)]);
-        return randomHs(hss[parseInt(index)])
+        var i=parseInt(index);
+        log(hss[i]);
+        var rs= randomHs(hss[parseInt(index)]);
+        if(i<2){
+            return rs;
+        }else{
+            return jkg(rs);
+        }
     }
     log(parseInt(index))
     log(hss[parseInt(index)]);
@@ -168,8 +174,26 @@ function getRandomhs(bqhss) {
 
 function zuhehs(index) { //组合话术
     var result = randomHs(hss[index]);
-    return getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + result + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
+    var hs= getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + random(result) + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
+    return hs;
+}
+function jkg(hs){
+    var hslist = hs.split('');
+    var rslist=[];
+    var i=0;
+     while(i<hslist.length){
+         rslist.push(hslist[i]+"");
+         if(isr()){
+             rslist.push(" ");
+         }
+         i++
+     }
+     return rslist.join('');
+}
 
+function isr(){
+   var x= random(0,100);
+   return x%2==0;
 }
 var hss = [];
 function readhss() { //读取话术
