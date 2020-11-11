@@ -26,6 +26,7 @@ ui.layout(
 );
 var Maid = require("../../common/Maid.js");
 var common = require("../../common/common.js");
+const { resetConsole } = require("../../common/common.js");
 var maid = new Maid("cn.wps.moffice_eng");
 var filePath = "/sdcard/Download/";
 var storage = storages.create("com.example.kjsr");
@@ -42,6 +43,7 @@ ui.hs.click(function () {
 ui.openapp.click(function () {
     var appName = ui.app.text();
     threads.start(function () {
+       // resetConsole();
         readhss();
         launchApp(appName);
         storage.put("appName", appName);
@@ -160,13 +162,12 @@ function geths(type, index) {
 function randomHs(hs) {
     var rs = hs[random(0, hs.length - 1)];
     if (rs == "" || rs == null) {
-        rs = "话术文件没有内容";
+        rs = "话术文1件没有内容";
     }
     return rs;
 }
 function getRandomhs(bqhss) {
-    var index3 = random(0, 1);
-    if (index3 == 0) {
+    if (isr()) {
         return "";
     }
     return randomHs(bqhss);
@@ -174,27 +175,36 @@ function getRandomhs(bqhss) {
 
 function zuhehs(index) { //组合话术
     var result = randomHs(hss[index]);
-    var hs= getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + random(result) + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
+    var hs= getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + jkg(result) + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
     return hs;
 }
 function jkg(hs){
     var hslist = hs.split('');
     var rslist=[];
-    var i=0;
-     while(i<hslist.length){
-         rslist.push(hslist[i]+"");
-         if(isr()){
-             rslist.push(" ");
+    var i=1;
+    rslist.push(String(""));
+     while(i<=hslist.length){
+         rslist.push(String(hslist[i-1]));
+         var x=kgn();
+            while(x>0){
+                rslist.push(" ");
+                x--;
          }
          i++
      }
      return rslist.join('');
 }
-
 function isr(){
-   var x= random(0,100);
+   var x= common.random(0,100);
+   log("----"+x)
    return x%2==0;
 }
+function kgn(){
+    var x= common.random(0,100);
+    log("----"+x)
+    return x%5;
+}
+
 var hss = [];
 function readhss() { //读取话术
     var filePath = "/sdcard/Download/";
