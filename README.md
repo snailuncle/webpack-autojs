@@ -1,3 +1,4 @@
+## 请手动创建一个dist文件夹
 ### 20200920 添加一个字符串替换的正则, 比如
 ```
     InputLayout.prototype.render = function () {
