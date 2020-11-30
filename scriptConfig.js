@@ -1,5 +1,5 @@
 
-//定义要编译的项目，你可以增加或减少数组，达到控制要编译那个项目
+//定义要编译的项目，compile， true 表示编译，false，不编译
 var projects = [ //项目数组，放的是每一个要编译的项目，
   {
     id: 1, //项目号
@@ -9,7 +9,7 @@ var projects = [ //项目数组，放的是每一个要编译的项目，
   },
   { id: 2, compile: false, name: "dy", main: "./main.js" },
   { id: 3, compile: false, name: "快捷输入", main: "./main.js" },
-  { id: 4, compile: true, name: "demo", main: "./main.js" },
+  { id: 4, compile: true, name: "websocket", main: "./main.js" },
 ]
 
 var config = {

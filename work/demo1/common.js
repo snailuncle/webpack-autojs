@@ -40,9 +40,6 @@ common.closeApp = function (name) {
     }
 }
 
-//短距离测试
-//sml_move(400, 1000, 800, 600, 1000);
-//此代码由飞云脚本圈整理提供（www.feiyunjs.com）
 function bezier_curves(cp, t) {
   var  cx = 3.0 * (cp[1].x - cp[0].x);
   var  bx = 3.0 * (cp[2].x - cp[1].x) - cx;
@@ -62,8 +59,7 @@ function bezier_curves(cp, t) {
     return result;
 };
 
-//仿真随机带曲线滑动  
-//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
+
 common.swipeRandom = function (qx, qy, zx, zy, time) {
     var xxy = [time];
     var point = [];

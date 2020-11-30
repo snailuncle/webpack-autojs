@@ -1,1 +1,0 @@
-org.mozilla.javascript.tools.jsc.Main.main(["/sdcard/脚本/main.js"])  
