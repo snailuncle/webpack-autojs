@@ -1,3 +1,10 @@
+## 由于webpack5和4语法不一样, 本项目创建时用的是webpack4, 所以请安装指定版本的webpack 和 cli
+```
+npm i webpack@4.41.4 -g
+
+npm i webpack-cli@3.3.10 -g
+
+```
 ## 请手动创建一个dist文件夹
 ### 20200920 添加一个字符串替换的正则, 比如
 ```
