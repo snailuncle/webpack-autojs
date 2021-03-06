@@ -3,7 +3,8 @@ const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
 const AutoxHeaderWebpackPlugin = require("autox-header-webpack-plugin");
-const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
+// const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
+const WatchDeployPlugin = require("./common/index.js");
 const CopyPlugin = require('copy-webpack-plugin');
 var scriptConfig = require('./scriptConfig.js');
 
@@ -13,20 +14,31 @@ var headerText = fs.readFileSync(headerFile, "utf8").trim();
 var dist = "./dist";
 var entry = {};
 var copyPatterns = [];
+var projectsMain={};
 scriptConfig.projects.forEach(project => {
   if (!project.compile) {
     return false;
   }
   var projectName = project.name;
   var outProjectName = scriptConfig.projectPrefix + project.name;
-  var outPathName = path.posix.resolve("/", outProjectName, project.main);
-  outPathName = outPathName.replace(".js", "");
+  projectsMain[projectName]=project.main
+  
   var entryPathName = path.posix.resolve(scriptConfig.baseDir, projectName, project.main);
+  var outPathName = path.posix.resolve("/", outProjectName, project.main);
+  outPathName = outPathName.replace(".js", "").replace('.ts','');
   entry[outPathName] = entryPathName;
-  var fronPath = path.posix.resolve(scriptConfig.baseDir, projectName).replace(/\\/g, '/') + "";
+  if(project.others){
+      for (let index = 0; index < project.others.length; index++) {
+             const fileName = project.others[index];
+             const outFileName=path.posix.resolve("/", outProjectName, fileName).replace('.js','').replace('.ts','');
+             entry[outFileName] = path.posix.resolve(scriptConfig.baseDir, projectName, fileName);
+      }
+  }
+  //copy 文件  
+  var fromPath = path.posix.resolve(scriptConfig.baseDir, projectName).replace(/\\/g, '/') + "";
   var toPath = path.posix.resolve(dist, outProjectName).replace(/\\/g, '/') + "";
   var pattern = {
-    from: fronPath,
+    from: fromPath,
     to: toPath,
     globOptions: {
       ignore: ['**/*.js', '**/*.ts']
@@ -112,7 +124,8 @@ module.exports = function (env, argv) {
         header: headerText
       }),
       new WatchDeployPlugin({
-        type: scriptConfig.watch
+        type: scriptConfig.watch,
+        projects:projectsMain
       }),
       new CleanWebpackPlugin({
         cleanStaleWebpackAssets: false,

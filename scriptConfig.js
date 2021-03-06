@@ -7,9 +7,11 @@ var projects = [ //项目数组，放的是每一个要编译的项目，
     name: "demo1", //项目名称，需要和文件夹名相同
     main: "./main.js" //主入文件，入口文件，按autojs目录，一般和project.json 同级
   },
-  { id: 2, compile: false, name: "dy", main: "./main.js" },
+  { id: 2, compile: true, name: "dy", main: "./main.js",
+     others:['./hssz.js','test.js','./main.js'] //其他需要编译的文件,可以包含入口，也可不包含
+},
   { id: 3, compile: false, name: "快捷输入", main: "./main.js" },
-  { id: 4, compile: true, name: "websocket", main: "./main.js" },
+  { id: 4, compile: false, name: "websocket", main: "./main.js" },
 ]
 
 var config = {

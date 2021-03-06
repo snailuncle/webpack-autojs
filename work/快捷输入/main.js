@@ -187,7 +187,7 @@ function jkg(hs){
          rslist.push(String(hslist[i-1]));
          var x=kgn();
             while(x>0){
-                rslist.push(" ");
+                rslist.push("");
                 x--;
          }
          i++
