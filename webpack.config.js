@@ -3,8 +3,7 @@ const fs = require("fs");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const JavascriptObfuscator = require("webpack-obfuscator");
 const AutoxHeaderWebpackPlugin = require("autox-header-webpack-plugin");
-// const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
-const WatchDeployPlugin = require("./common/index.js");
+const WatchDeployPlugin = require("autox-deploy-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 var scriptConfig = require('./scriptConfig.js');
 
