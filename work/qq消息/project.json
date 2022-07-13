@@ -1,0 +1,13 @@
+{
+    "name": "qq消息",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "launchConfig": {
+        "hideLogs": true
+    },
+    "packageName": "com.example.qqmsg",
+    "versionName": "1.5.0",
+    "versionCode": 5
+}
