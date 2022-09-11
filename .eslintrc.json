@@ -4,6 +4,7 @@
     "commonjs": true,
     "es6": true
   },
+  "parser": "babel-eslint",
   "extends": "eslint:recommended",
   "globals": {
     "Atomics": "readonly",
