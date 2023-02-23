@@ -4,9 +4,7 @@ ui.layout(
     <vertical padding="16" id="parent">
         <TextView text="快捷输入" gravity="center" textSize="24sp" padding="10 10 10 10" />
         <horizontal>
-            <TextView w="auto" text="表情话术【hs0.txt】+表情话术【hs1.txt】+文本话术【hs2—hsN】,保存在download目录下的文件hs0-n.txt，每一行为一条话术,
-            0,1号话术库，会随机添加在 2-N号话术库的前后
-            " />
+            <TextView w="auto" text="文本话术库【hs0—hsN】,保存在download目录下的文件hs0到hsN.txt，每一行为一条话术" />
         </horizontal>
         <horizontal>
             <TextView w="auto" text="话术库" />
@@ -14,7 +12,7 @@ ui.layout(
             <TextView w="auto" text="个（总数）" />
         </horizontal>
         <horizontal>
-            <TextView w="auto" text="保存在download/hs0-n.txt" />
+            <TextView w="auto" text="保存在download/hs0-hsN.txt" />
             <button w="*" id="hs" text="wps编辑话术" />
         </horizontal>
         <horizontal>
@@ -24,10 +22,8 @@ ui.layout(
         </horizontal>
     </vertical>
 );
-var Maid = require("../../common/Maid.js");
 var common = require("../../common/common.js");
 const { resetConsole } = require("../../common/common.js");
-var maid = new Maid("cn.wps.moffice_eng");
 var filePath = "/sdcard/Download/";
 var storage = storages.create("com.example.kjsr");
 var totalhs = storage.get("totalhs", 3);
@@ -36,6 +32,7 @@ ui.totalhs.setText(totalhs + "");
 ui.app.setText(appName);
 ui.hs.click(function () {
     toast("打开wps,表情编辑话术");
+    launch("cn.wps.moffice_eng");
     totalhs = Number(ui.totalhs.text());
     storage.put("totalhs", totalhs);
     hszs();
@@ -52,10 +49,8 @@ ui.openapp.click(function () {
 });
 function hszs() {
     threads.start(function () {
-        maid.before(true);
-        maid.launch();
         for (var index = 0; index <= totalhs; index++) {
-            maid.checkFile(filePath + "hs" + index + ".txt");
+            common.checkFile(filePath + "hs" + index + ".txt");
         }
     })
 }
@@ -63,7 +58,6 @@ function floatyWindow() {
     var window = floaty.window(
         <vertical>
             <horizontal>
-                <button id="qh" text="切换"></button>
                 <button id="tu" text="移动"></button>
                 <button id="yc" text="隐藏"></button>
             </horizontal>
@@ -74,18 +68,17 @@ function floatyWindow() {
     );
     window.setPosition(device.width * 0.1, device.height * 0.5);
     window.exitOnClose();
-    var type = false;
-    window.actions.setDataSource(initKeys(type));
+    window.actions.setDataSource(initKeys());
     window.actions.on("item_bind", function (itemView, itemHolder) {
         itemView.action.on("click", function () {
             var text = itemHolder.item.key;
             log(text)
             threads.start(function () {
                 if (text != "del") {
-                    var txt = geths(type, text);
+                    var txt = geths(text);
                     var edwg = className("android.widget.EditText").findOnce()
                     if (edwg != null) {
-                        if (type && edwg.text() != "发送消息...") {
+                        if (edwg.text() != "发送消息...") {
                             txt = edwg.text() + txt;
                         }
                         ui.run(() => {
@@ -107,12 +100,6 @@ function floatyWindow() {
         window.setAdjustEnabled(!window.isAdjustEnabled());
         return true;
     });
-    window.qh.click(() => {
-        type = !type;
-        ui.run(function () {
-            window.actions.setDataSource(initKeys(type));
-        })
-    });
     var yc = false;
     window.yc.click(() => {
         yc = !yc;
@@ -122,39 +109,20 @@ function floatyWindow() {
             })
         } else {
             ui.run(function () {
-                window.actions.setDataSource(initKeys(type));
+                window.actions.setDataSource(initKeys());
             })
         }
     });
 }
-function initKeys(type) {
+function initKeys() {
     var arr = [];
-    if (type) {
-        arr.push({ key: "表情" });
-        arr.push({ key: "1" });
-        log("自由组合模式");
-    }
-    for (var index = 2; index <= totalhs; index++) {
+    for (var index = 0; index <= totalhs; index++) {
         arr.push({ key: index });
     }
     arr.push({ key: 'del' });
     return arr;
 }
-function geths(type, index) {
-    log(hss)
-    if (type) {
-        if (index == "表情") {
-            index = 0;
-        }
-        var i=parseInt(index);
-        log(hss[i]);
-        var rs= randomHs(hss[parseInt(index)]);
-        if(i<2){
-            return rs;
-        }else{
-            return jkg(rs);
-        }
-    }
+function geths(index) {
     log(parseInt(index))
     log(hss[parseInt(index)]);
     return zuhehs(parseInt(index));
@@ -166,45 +134,10 @@ function randomHs(hs) {
     }
     return rs;
 }
-function getRandomhs(bqhss) {
-    if (isr()) {
-        return "";
-    }
-    return randomHs(bqhss);
-}
-
 function zuhehs(index) { //组合话术
     var result = randomHs(hss[index]);
-    var hs= getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]) + jkg(result) + getRandomhs(hss[random(0, 1)]) + getRandomhs(hss[random(0, 1)]);
-    return hs;
+    return result;
 }
-function jkg(hs){
-    var hslist = hs.split('');
-    var rslist=[];
-    var i=1;
-    rslist.push(String(""));
-     while(i<=hslist.length){
-         rslist.push(String(hslist[i-1]));
-         var x=kgn();
-            while(x>0){
-                rslist.push("");
-                x--;
-         }
-         i++
-     }
-     return rslist.join('');
-}
-function isr(){
-   var x= common.random(0,100);
-   log("----"+x)
-   return x%2==0;
-}
-function kgn(){
-    var x= common.random(0,100);
-    log("----"+x)
-    return x%5;
-}
-
 var hss = [];
 function readhss() { //读取话术
     var filePath = "/sdcard/Download/";

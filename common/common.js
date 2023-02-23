@@ -507,4 +507,10 @@ common.saveInfo =function (userInfo){
       console.log(error);      
     }
 }
+common.checkFile = function(dirPath){
+    files.ensureDir(dirPath);
+    if (!files.exists(dirPath)) {
+        files.create(dirPath);
+    }
+}
 module.exports = common
