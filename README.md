@@ -27,14 +27,14 @@ npm i webpack-cli@3.3.10 -g
 
 -2. 无法加载文件, 因为在此系统上禁止运行脚本。 cmd管理员执行该代码 `set-ExecutionPolicy RemoteSigned`
 
--1. 需要全局安装webpack webpack-cli `npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org`
+-1. 需要全局安装webpack webpack-cli `npm i -g webpack webpack-cli --registry=https://registry.npmmirror.com`
 
 0. 功能: 打包autojs, 不论单个文件, 还是多个文件, 不管有ui还是没ui, 都可以正常打包使用
 1. 下载仓库
 
     `git clone https://github.com/snailuncle/webpack-autojs`
 2. 命令行
-    `npm install --registry=https://registry.npm.taobao.org`
+    `npm install --registry=https://registry.npmmirror.com`
 3. 复制autojs项目的入口文件路径到`entry.txt`
 4. 命令行 `webpack`
 5. 打包后的文件在`dist`目录下
