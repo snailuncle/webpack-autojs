@@ -22,11 +22,11 @@
 # 使用方法
 1. 你需要安装 nodejs ，安装过程中请注意要 [ 将node添加PATH中 ] 和 安装 npm 这两个选项都要勾选上。(一般的前端工程师都有这个环节)
 2.  安装[vscode](https://code.visualstudio.com/) 并安装 autoxjs开发插件即：[Auto.js-VSCodeExt-Fixed](https://marketplace.visualstudio.com/items?itemName=aaroncheng.auto-js-vsce-fixed)  注意是0.3.11 或以上版本。 （ctr+ shift+p 选择autojs 启动服务）
-3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npm.taobao.org ```
+3.  安装全局安装 webpack： ``` npm i -g webpack webpack-cli --registry=https://registry.npmmirror.com ```
 4.  [下载本项目](https://github.com/kkevsekk1/webpack-autojs/archive/master.zip) 或git clone 项目  ``` git clone https://github.com/kkevsekk1/webpack-autojs.git ``` 
     
 5. cmd 到项目 ， 运行命令，安装依赖
-    ```npm install --registry=https://registry.npm.taobao.org ```
+    ```npm install --registry=https://registry.npmmirror.com ```
 
 6.  到这来基本上可以说 开发环境 就完成了，（你还要一部手安装 autoxjs），下面说 这项目的配置文件和开发的形式。
 
